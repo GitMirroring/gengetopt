@@ -68,16 +68,6 @@ extern const char *@args_info@_purpose;
 extern const char *@args_info@_usage;
 /** @@brief the description string of the program */
 extern const char *@args_info@_description;
-/** @@brief all the lines making the help output */
-extern const char *@args_info@_help[];
-@IF@ has_hidden @THEN@
-/** @@brief all the lines making the full help output (including hidden options) */
-extern const char *@args_info@_full_help[];
-@ENDIF@
-@IF@ has_details @THEN@
-/** @@brief all the lines making the detailed help output (including hidden options and details) */
-extern const char *@args_info@_detailed_help[];
-@ENDIF@
 
 /**
  * The command line parser
