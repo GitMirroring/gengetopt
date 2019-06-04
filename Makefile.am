@@ -21,3 +21,21 @@ EXTRA_DIST = configure TODO LICENSE gl/m4/gnulib-cache.m4
 SUBDIRS = gl src doc tests
 
 gengetoptdoc_DATA = ChangeLog COPYING NEWS THANKS INSTALL README LICENSE
+
+TARBALL = $(top_builddir)/gengetopt-$(PACKAGE_VERSION).tar.xz
+
+release:
+	$(MAKE) $(AM_MAKEFLAGS)
+	$(MAKE) $(AM_MAKEFLAGS) check
+	$(MAKE) $(AM_MAKEFLAGS) dist
+	cp $(top_srcdir)/gengetopt.directive $(TARBALL).directive
+	sed -i -e 's/VERSION/$(PACKAGE_VERSION)/g' $(TARBALL).directive
+	gpg --yes --detach-sign $(TARBALL)
+	gpg --yes --clear-sign $(TARBALL).directive
+	curl -T $(TARBALL)               ftp://ftp-upload.gnu.org/incoming/ftp/
+	curl -T $(TARBALL).sig           ftp://ftp-upload.gnu.org/incoming/ftp/
+	curl -T $(TARBALL).directive.asc ftp://ftp-upload.gnu.org/incoming/ftp/
+	@echo
+	@echo 'Do not forget to update the website!'
+	@echo 'https://www.gnu.org/prep/maintain/maintain.html#Web-Pages'
+	@echo
