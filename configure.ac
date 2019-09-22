@@ -61,6 +61,13 @@ AC_ARG_ENABLE(
 	AC_COMPILE_WARNINGS
 )
 
+AC_ARG_ENABLE(
+	[doc],
+	[--enable-doc			enable documentation],
+	[enable_doc=$enableval],
+	[enable_doc=yes])
+AM_CONDITIONAL(ENABLE_DOC, test x"$enable_doc" = xyes)
+
 AC_ARG_WITH(
 	[gengen],
 	[  --with-gengen=mygengen       gengen to use],
