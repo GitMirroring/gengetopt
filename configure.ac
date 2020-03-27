@@ -45,6 +45,7 @@ AM_PROG_LIBTOOL
 AM_PROG_LEX
 
 AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.19)
 
 dnl add options for non GNU compilers
 AC_NONGNU_FLAGS
