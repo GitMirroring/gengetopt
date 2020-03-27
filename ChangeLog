@@ -1,6 +1,5 @@
 2020-03-27  Grégoire Scano  <gregoire.scano@malloc.fr>
 
-	* ABOUT-NLS: Add gettext support.
 	* configure.ac (AC_CONFIG_FILES): Add po/Makefile.in.
 	* Makefile.am: Add po directory.
 	* po/Makevars: New file, from gettext-0.19.8.1.
