@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the GNU gengetopt package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GNU gengetopt 2.23\n"
+"Report-Msgid-Bugs-To: bug-gengetopt@gnu.org\n"
+"POT-Creation-Date: 2020-03-26 16:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/gengetopt.cc:124
+#, c-format
+msgid "Run gengetopt --help to see the list of options.\n"
+msgstr ""
+
+#: src/gengetopt.cc:155
+#, c-format
+msgid "Error opening input file: %s\n"
+msgstr ""
+
+#: src/gengetopt.cc:173
+#, c-format
+msgid "Error in the args specification of the input_file.\n"
+msgstr ""
+
+#: src/gengetopt.cc:299
+msgid "package not defined; please specify it with --set-package"
+msgstr ""
+
+#: src/gengetopt.cc:304
+msgid "version not defined; please specify it with --set-version"
+msgstr ""
+
+#: src/gengetopt.cc:321
+msgid "Usage: "
+msgstr ""
+
+#: src/gengetopt.cc:884
+msgid "option depends on itself"
+msgstr ""
+
+#: src/gengetopt.cc:900
+msgid "option depends on undefined option"
+msgstr ""
+
+#: src/gengetopt.cc:935
+#, c-format
+msgid "gengetopt: not enough memory to canonize vars\n"
+msgstr ""
+
+#: src/gengetopt.cc:976
+msgid "Maintained by Tomas Volf <wolf@wolfsden.cz>"
+msgstr ""
+
+#: src/gengetopt.cc:977
+msgid "Report bugs to <bug-gengetopt@gnu.org>"
+msgstr ""

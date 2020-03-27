@@ -49,14 +49,14 @@ parser.h: parser.cc
 	fi
 
 # these are for gnulib
-AM_CPPFLAGS = -I$(top_srcdir)/gl -I$(top_builddir)/gl
+AM_CPPFLAGS = -I$(top_srcdir)/gl -I$(top_builddir)/gl -DLOCALEDIR=\"$(localedir)\"
 
 libgengetopt_la_LIBADD = \
 	$(top_builddir)/gl/libgnu.la \
 	@LTLIBOBJS@ \
 	skels/libgen.la
 
-LDADD = libgengetopt.la
+LDADD = libgengetopt.la @LIBINTL@
 
 EXTRA_DIST = \
 	$(pkgdata_DATA) \

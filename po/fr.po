@@ -1,0 +1,64 @@
+# French translation of GNU Gengetopt
+# Copyright (C) 2020 Free Software Foundation, Inc.
+# This file is distributed under the same license as the GNU gengetopt package.
+# Grégoire Scano <gregoire.scano@malloc.fr>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: GNU gengetopt 2.23\n"
+"Report-Msgid-Bugs-To: bug-gengetopt@gnu.org\n"
+"POT-Creation-Date: 2020-03-26 16:10+0800\n"
+"PO-Revision-Date: 2020-03-26 17:02+0800\n"
+"Last-Translator: Grégoire Scano <gregoire.scano@malloc.fr>\n"
+"Language-Team: French <traduc@traduc.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/gengetopt.cc:124
+#, c-format
+msgid "Run gengetopt --help to see the list of options.\n"
+msgstr "Executez « gengetopt --help » pour afficher la liste des options.\n"
+
+#: src/gengetopt.cc:155
+#, c-format
+msgid "Error opening input file: %s\n"
+msgstr "Erreur lors de l'ouverture du fichier d'entrée : %s\n"
+
+#: src/gengetopt.cc:173
+#, c-format
+msgid "Error in the args specification of the input_file.\n"
+msgstr "Erreur dans les arguments renseignés dans le fichier d'entrée.\n"
+
+#: src/gengetopt.cc:299
+msgid "package not defined; please specify it with --set-package"
+msgstr "« package » non définit ; merci de renseigner --set-package"
+
+#: src/gengetopt.cc:304
+msgid "version not defined; please specify it with --set-version"
+msgstr "version non définie ; merci de renseigner --set-version"
+
+#: src/gengetopt.cc:321
+msgid "Usage: "
+msgstr "Usage : "
+
+#: src/gengetopt.cc:884
+msgid "option depends on itself"
+msgstr "l'option dépend d'elle-même"
+
+#: src/gengetopt.cc:900
+msgid "option depends on undefined option"
+msgstr "l'option dépend d'une option non définie"
+
+#: src/gengetopt.cc:935
+#, c-format
+msgid "gengetopt: not enough memory to canonize vars\n"
+msgstr "gengetopt : pas assez de mémoire pour canoniser les variables\n"
+
+#: src/gengetopt.cc:976
+msgid "Maintained by Tomas Volf <wolf@wolfsden.cz>"
+msgstr "Maintenu par Tomas Wolf <wolf@wolfsden.cz>"
+
+#: src/gengetopt.cc:977
+msgid "Report bugs to <bug-gengetopt@gnu.org>"
+msgstr "Signaler les bogue à <bug-gengetopt@gnu.org>"

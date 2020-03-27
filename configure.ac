@@ -44,6 +44,8 @@ AC_PROG_YACC
 AM_PROG_LIBTOOL
 AM_PROG_LEX
 
+AM_GNU_GETTEXT([external])
+
 dnl add options for non GNU compilers
 AC_NONGNU_FLAGS
 
@@ -121,6 +123,7 @@ AM_CONDITIONAL(NO_CROSSCOMPILING, test "$cross_compiling" = no )
 AH_TEMPLATE(HAVE_LONG_LONG)
 
 AC_CONFIG_FILES([
+	po/Makefile.in
 	Makefile
 	doc/Makefile
 	gl/Makefile

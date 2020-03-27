@@ -1,0 +1,6 @@
+Gengetopt uses gettext for the localization of its messages.
+
+To set up the Locale while using gengetopt, please refer to the documentation
+https://www.gnu.org/software/gettext
+
+Use 'LANGUAGE=.. ./gengetopt' to test.

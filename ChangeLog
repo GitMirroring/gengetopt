@@ -1,3 +1,17 @@
+2020-03-27  Grégoire Scano  <gregoire.scano@malloc.fr>
+
+	* ABOUT-NLS: Add gettext support.
+	* configure.ac (AC_CONFIG_FILES): Add po/Makefile.in.
+	* Makefile.am: Add po directory.
+	* po/Makevars: New file, from gettext-0.19.8.1.
+	* po/POTFILES.in: New file, add src/gengetopt.c.
+	* po/LINGUAS: Add 'fr'.
+	* po/gengetopt.pot: Add po template file.
+	* po/fr.po: Add French translation.
+	* src/Makefile.am: Add LOCALEDIR to CPPFLAGS
+	and link with LIBINTL.
+	* src/gengetopt.cc: Set up gettext and add messages.
+
 2019-05-30  Tomas Volf <wolf@wolfsden.cz>
 
 	* --unamed command line option renamed to --unnamed, old still
