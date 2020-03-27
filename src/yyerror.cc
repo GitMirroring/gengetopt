@@ -12,6 +12,8 @@ This file is licensed to you under the license specified in the included file
 #include "config.h"
 #endif
 
+#include "nls.h"
+
 #include "yyerror.h"
 
 #include <stdio.h>
@@ -33,13 +35,13 @@ yyerror (const char *s)
   const char *source =
     (gengetopt_input_filename ? gengetopt_input_filename : "gengetopt");
 
-  fprintf (stderr, "%s:%d: %s %s\n", source, gengetopt_count_line, s, yytext);
+  fprintf (stderr, _("%s:%d: %s %s\n"), source, gengetopt_count_line, s, yytext);
 
   if (/*!linebuf || */!strlen(linebuf))
     return;
 
-  fprintf (stderr, "%s:%d: %s\n", source, gengetopt_count_line, linebuf);
-  fprintf (stderr, "%s:%d: %*s\n", source, gengetopt_count_line,
+  fprintf (stderr, _("%s:%d: %s\n"), source, gengetopt_count_line, linebuf);
+  fprintf (stderr, _("%s:%d: %*s\n"), source, gengetopt_count_line,
            tokenpos + 1, "^");
 }
 

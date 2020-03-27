@@ -38,6 +38,8 @@ extern "C"
 #include "global_opts.h"
 };
 
+#include "nls.h"
+
 #include "ggo_options.h"
 
 #include "gm.h"
@@ -341,7 +343,7 @@ void CmdlineParserCreator::set_has_arg_types() {
             set_has_arg_enum(true);
             break;
         default:
-            fprintf (stderr, "gengetopt: bug found in %s:%d!!\n",
+	    fprintf (stderr, _("gengetopt: bug found in %s:%d!!\n"),
                     __FILE__, __LINE__);
             abort ();
         }
@@ -376,7 +378,7 @@ CmdlineParserCreator::generate_header_file ()
 {
   if (! gengetopt_options.size())
     {
-      fprintf (stderr, "gengetopt: none option given\n");
+      fprintf (stderr, _("gengetopt: none option given\n"));
       return 1;
     }
 
@@ -424,7 +426,7 @@ CmdlineParserCreator::generate_enum_types(ostream &stream,
     // but it's better to check it
     if (opt->type == ARG_ENUM) {
         if (! (opt->acceptedvalues)) {
-            fprintf (stderr, "gengetopt: bug found in %s:%d!!\n",
+     	    fprintf (stderr, _("gengetopt: bug found in %s:%d!!\n"),
                             __FILE__, __LINE__);
             abort ();
         }
@@ -535,7 +537,7 @@ CmdlineParserCreator::generate_option_given(ostream &stream,
       case ARG_ENUM:
           break;
       default:
-        fprintf (stderr, "gengetopt: bug found in %s:%d!!\n",
+        fprintf (stderr, _("gengetopt: bug found in %s:%d!!\n"),
                  __FILE__, __LINE__);
         abort ();
       }
@@ -643,7 +645,7 @@ static void generate_option_usage_string(gengetopt_option * opt, ostream &usage)
         usage << "--" << opt->long_opt << "=" << type_str;
 
         break;
-    default: fprintf (stderr, "gengetopt: bug found in %s:%d!!\n",
+    default: fprintf (stderr, _("gengetopt: bug found in %s:%d!!\n"),
             __FILE__, __LINE__);
     abort ();
     }

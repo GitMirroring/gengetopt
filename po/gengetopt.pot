@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNU gengetopt 2.23\n"
 "Report-Msgid-Bugs-To: bug-gengetopt@gnu.org\n"
-"POT-Creation-Date: 2020-03-26 16:10+0800\n"
+"POT-Creation-Date: 2020-03-27 16:55+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,50 +17,75 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gengetopt.cc:124
+#: src/gengetopt.cc:122
 #, c-format
 msgid "Run gengetopt --help to see the list of options.\n"
 msgstr ""
 
-#: src/gengetopt.cc:155
+#: src/gengetopt.cc:153
 #, c-format
 msgid "Error opening input file: %s\n"
 msgstr ""
 
-#: src/gengetopt.cc:173
+#: src/gengetopt.cc:171
 #, c-format
 msgid "Error in the args specification of the input_file.\n"
 msgstr ""
 
-#: src/gengetopt.cc:299
+#: src/gengetopt.cc:297
 msgid "package not defined; please specify it with --set-package"
 msgstr ""
 
-#: src/gengetopt.cc:304
+#: src/gengetopt.cc:302
 msgid "version not defined; please specify it with --set-version"
 msgstr ""
 
-#: src/gengetopt.cc:321
+#: src/gengetopt.cc:319
 msgid "Usage: "
 msgstr ""
 
-#: src/gengetopt.cc:884
+#: src/gengetopt.cc:882
 msgid "option depends on itself"
 msgstr ""
 
-#: src/gengetopt.cc:900
+#: src/gengetopt.cc:898
 msgid "option depends on undefined option"
 msgstr ""
 
-#: src/gengetopt.cc:935
+#: src/gengetopt.cc:933
 #, c-format
 msgid "gengetopt: not enough memory to canonize vars\n"
 msgstr ""
 
-#: src/gengetopt.cc:976
+#: src/gengetopt.cc:974
 msgid "Maintained by Tomas Volf <wolf@wolfsden.cz>"
 msgstr ""
 
-#: src/gengetopt.cc:977
+#: src/gengetopt.cc:975
 msgid "Report bugs to <bug-gengetopt@gnu.org>"
+msgstr ""
+
+#: src/gm.cc:346 src/gm.cc:429 src/gm.cc:540 src/gm.cc:648
+#, c-format
+msgid "gengetopt: bug found in %s:%d!!\n"
+msgstr ""
+
+#: src/gm.cc:381
+#, c-format
+msgid "gengetopt: none option given\n"
+msgstr ""
+
+#: src/yyerror.cc:38
+#, c-format
+msgid "%s:%d: %s %s\n"
+msgstr ""
+
+#: src/yyerror.cc:43
+#, c-format
+msgid "%s:%d: %s\n"
+msgstr ""
+
+#: src/yyerror.cc:44
+#, c-format
+msgid "%s:%d: %*s\n"
 msgstr ""

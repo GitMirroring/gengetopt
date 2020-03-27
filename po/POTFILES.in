@@ -1,2 +1,4 @@
 # List of source files which contain translatable strings.
 src/gengetopt.cc
+src/gm.cc
+src/yyerror.cc

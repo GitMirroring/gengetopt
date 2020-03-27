@@ -1,3 +1,12 @@
+2020-03-27 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* po/POTFILES.in: Add src/gm.cc and src/yyerror.cc
+	* po/gengetopt.po: Update strings.
+	* po/fr.po: Update strings.
+	* src/gm.cc: Add gettext messages.
+	* src/nls.cc: global file for gettext import and functions.
+	* src/yyerror.cc: Add gettext messages.
+
 2020-03-27  Grégoire Scano  <gregoire.scano@malloc.fr>
 
 	* configure.ac (AC_CONFIG_FILES): Add po/Makefile.in.
