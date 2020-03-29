@@ -131,6 +131,13 @@ main (int argc, char **argv)
       exit (0);
     }
 
+  if (args_info.full_help_given)
+    {
+      cmdline_parser_print_full_help ();
+      print_reportbugs ();
+      exit (0);
+    }
+
   if (args_info.version_given)
   {
     cmdline_parser_print_version ();
