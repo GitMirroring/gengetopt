@@ -765,6 +765,35 @@ generate_help_desc_print(ostream &stream,
   stream << desc;
 }
 
+void CmdlineParserCreator::generate_help_option_count_from_list(ostream &stream,
+	const OptionHelpList & option_list) {
+
+  unsigned int count = std::distance(option_list.begin(), option_list.end());
+
+  stream << count;
+}
+
+void CmdlineParserCreator::generate_detailed_help_option_count(ostream &stream,
+							      unsigned int indent) {
+
+  OptionHelpList *option_list = generate_help_option_list(true, true);
+  this->generate_help_option_count_from_list(stream, *option_list);
+  delete option_list;
+}
+
+void CmdlineParserCreator::generate_full_help_option_count(ostream &stream,
+							  unsigned int indent) {
+    OptionHelpList *option_list = generate_help_option_list(true);
+  this->generate_help_option_count_from_list(stream, *option_list);
+  delete option_list;
+}
+
+void CmdlineParserCreator::generate_help_option_count(ostream &stream,
+						     unsigned int indent) {
+    OptionHelpList *option_list = generate_help_option_list();
+  this->generate_help_option_count_from_list(stream, *option_list);
+  delete option_list;
+}
 
 void
 CmdlineParserCreator::generate_help_option_print_from_lists(ostream &stream,
@@ -822,7 +851,7 @@ CmdlineParserCreator::generate_help_option_print_from_lists(ostream &stream,
     // we store the number of strings in this array
     converted_int.str("");
     converted_int << ++help_num;
-    set_help_string_num(converted_int.str());
+    //set_help_string_num(converted_int.str());
 }
 
 void
@@ -864,7 +893,7 @@ CmdlineParserCreator::generate_help_option_print_from_list(ostream &stream,
     // we store the number of strings in this array
     converted_int.str("");
     converted_int << ++i;
-    set_help_string_num(converted_int.str());
+    //set_help_string_num(converted_int.str());
 }
 
 void

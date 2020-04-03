@@ -107,10 +107,13 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
   virtual void generate_handle_group(ostream &stream, unsigned int indent);
   virtual void generate_group_counters(ostream &stream, unsigned int indent);
   virtual void generate_mode_counters(ostream &stream, unsigned int indent);
+  virtual void generate_help_option_count(ostream & stream, unsigned int indent);
   virtual void generate_help_option_print(ostream &stream,
                                           unsigned int indent);
+  virtual void generate_full_help_option_count(ostream & stream, unsigned int indent);
   virtual void generate_full_help_option_print(ostream &stream,
                                           unsigned int indent);
+  virtual void generate_detailed_help_option_count(ostream & stream, unsigned int indent);
   virtual void generate_detailed_help_option_print(ostream &stream,
                                           unsigned int indent);
   virtual void generate_long_option_struct(ostream &stream,
@@ -182,6 +185,9 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
           unsigned int indent, OptionHelpList *complete_list,
           OptionHelpList *smaller_list, const std::string &target_array,
           const std::string &source_array);
+
+  void generate_help_option_count_from_list(ostream &stream,
+          const OptionHelpList & option_list);
   
   /**
    * generate the non-shared initialisation strings for a list of help strings

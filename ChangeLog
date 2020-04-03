@@ -1,3 +1,9 @@
+2020-04-03 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/gm.cc, src/gm.h, src/skels/c_source.h_skel.h: set the
+	correct size for generated help string arrays without any
+	forward references (they are invalid anyway).
+
 2012-11-01  Tim Marston  <tim@ed.am>
 
 	* src/gm.cc, src/skels/c_source.h_skel: the three generated help
