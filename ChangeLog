@@ -1,10 +1,11 @@
 2020-04-06 Grégoire Scano <gregoire.scano@malloc.fr>
 
+	* src/skels/custom_getopt_gen.h_skel,
 	* src/skels/c_source.h_skel, src/skels/dependant_option.h_skel,
 	* src/skels/group_option.h_skel, src/skels/print_help_string.h_skel,
 	* src/skels/required_option.h_skel: add gettext support to generated
 	strings from skeletons.
-	* src/fileutils.cpp: add missing gengetopt gettext strings
+	* src/fileutils.cpp: add missing gengetopt gettext strings.
 
 2020-04-03 Grégoire Scano <gregoire.scano@malloc.fr>
 
