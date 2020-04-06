@@ -18,6 +18,7 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "nls.h"
 #include "fileutils.h"
 
 using namespace std;
@@ -31,7 +32,7 @@ create_filename (char *name, char *ext)
   /* 2 = 1 for the . and one for the '\0' */
   if (! filename)
     {
-      fprintf (stderr, "Error in memory allocation! %s %d\n",
+      fprintf (stderr, _("Error in memory allocation! %s %d\n"),
                __FILE__, __LINE__);
       abort ();
     }
@@ -48,7 +49,7 @@ open_fstream (const char *filename)
 
   if ( ! (*fstream) )
     {
-      fprintf( stderr, "Error creating %s\n", filename ) ;
+      fprintf( stderr, _("Error creating %s\n"), filename ) ;
       abort() ;
     }
 

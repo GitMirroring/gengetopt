@@ -1,3 +1,7 @@
+2020-04-06 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/fileutils.cpp: add missing gengetopt gettext strings
+
 2020-04-03 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/gm.cc, src/gm.h, src/skels/c_source.h_skel.h: set the
