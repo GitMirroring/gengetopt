@@ -1,3 +1,8 @@
+2020-04-08 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/gm.cc, src/skels/print_help_string.h_skel: do not call gettext
+	on empty strings in detailed_help_array.
+
 2020-04-06 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/skels/custom_getopt_gen.h_skel,

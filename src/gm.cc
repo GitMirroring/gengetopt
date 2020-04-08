@@ -877,6 +877,7 @@ CmdlineParserCreator::generate_help_option_print_from_list(ostream &stream,
 		// the index into the help array
 		print_gen.set_index(converted_int.str());
 		print_gen.set_helpstring(*it);
+		print_gen.set_not_empty(!it->empty());
 		print_gen.generate_print_help_string(stream, indent);
 
 		i++;
