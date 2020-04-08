@@ -1059,6 +1059,9 @@ void CmdlineParserCreator::generate_custom_getopt(ostream &stream, unsigned int 
     customgetopt.generate_custom_getopt_gen (stream, indentation);
 }
 
+// The empty msgid is reserved by GNU gettext,
+// assess its use for the following strings.
+
 const string
 CmdlineParserCreator::generate_purpose()
 {
@@ -1066,6 +1069,7 @@ CmdlineParserCreator::generate_purpose()
 
   if (gengetopt_purpose != NULL)
     {
+      set_has_purpose(true);
       wrap_cstr(wrapped_purpose, 0, 0, gengetopt_purpose);
     }
 
@@ -1079,6 +1083,7 @@ CmdlineParserCreator::generate_versiontext()
 
   if (gengetopt_versiontext != NULL)
     {
+      set_has_versiontext(true);
 	  wrap_cstr(wrapped_versiontext, 0, 0, gengetopt_versiontext);
 	}
 
@@ -1092,6 +1097,7 @@ CmdlineParserCreator::generate_description()
 
   if (gengetopt_description != NULL)
     {
+      set_has_description(true);
       wrap_cstr(wrapped_description, 0, 0, gengetopt_description);
     }
 

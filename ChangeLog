@@ -2,6 +2,13 @@
 
 	* src/gm.cc, src/skels/print_help_string.h_skel: do not call gettext
 	on empty strings in detailed_help_array.
+	* src/gm.cc, src/skels/c_source.h_skel, src/skels/header.h_skel:
+	Feed 'purpose', 'usage', and 'description' to gettext. Since those
+	names prefixed by @args_info@ were in the generated header file,
+	IT MAY BREAK THE PREVIOUS INTERFACE, replacing the associated
+	variables with functions of the same name. The 'usage' string
+	returned by the associated function does not prepend
+	'Usage: @CMDLINE_PARSER_PACKAGE@' anymore.
 
 2020-04-06 Grégoire Scano <gregoire.scano@malloc.fr>
 

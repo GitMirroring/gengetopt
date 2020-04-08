@@ -63,11 +63,11 @@ struct @parser_name@_params
 } ;
 
 /** @@brief the purpose string of the program */
-extern const char *@args_info@_purpose;
+const char *@args_info@_purpose();
 /** @@brief the usage string of the program */
-extern const char *@args_info@_usage;
+const char *@args_info@_usage();
 /** @@brief the description string of the program */
-extern const char *@args_info@_description;
+const char *@args_info@_description();
 
 /**
  * The command line parser

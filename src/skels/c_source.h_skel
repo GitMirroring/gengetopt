@@ -39,13 +39,13 @@ extern char * ngettext(char *, char *, unsigned long int);
 
 #include "@source_name@.@header_file_ext@"
 
-const char *@args_info@_purpose = "@purpose@";
+const char *@args_info@_purpose() { return @IF@ has_purpose @THEN@ gettext("@purpose@") @ELSE@ "" @ENDIF@; }
 
-const char *@args_info@_usage = "Usage: @if@ no_package @then@" @package_var_name@ "@endif@@usage_string@";
+const char *@args_info@_usage() { return gettext("@usage_string@"); }
 
-const char *@args_info@_versiontext = "@versiontext@";
+const char *@args_info@_versiontext() { return @IF@ has_versiontext @THEN@ gettext("@versiontext@") @ELSE@ "" @ENDIF@; }
 
-const char *@args_info@_description = "@description@";
+const char *@args_info@_description() { return @IF@ has_description @THEN@ gettext("@description@") @ELSE@ "" @ENDIF@; }
 
 @IF@ has_details @THEN@
 static const char *@args_info@_detailed_help[@detailed_help_option_count:method@] = { 0 };
@@ -182,28 +182,28 @@ void
      (strlen(@package_var_name@_NAME) ? @package_var_name@_NAME : @package_var_name@),
      @version_var_name@);
 
-  if (strlen(@args_info@_versiontext) > 0)
-    printf("\n%s\n", @args_info@_versiontext);
+  if (strlen(@args_info@_versiontext()) > 0)
+    printf("\n%s\n", @args_info@_versiontext());
 }
 
 static void print_help_common(void)
 {
-	size_t len_purpose = strlen(@args_info@_purpose);
-	size_t len_usage = strlen(@args_info@_usage);
+	size_t len_purpose = strlen(@args_info@_purpose());
+	size_t len_usage = strlen(@args_info@_usage());
 
 	if (len_usage > 0) {
-		printf("%s\n", @args_info@_usage);
+	        printf(gettext("Usage: %s %s\n"), @if@ no_package @then@ @package_var_name@ @else@""@endif@, @args_info@_usage());
 	}
 	if (len_purpose > 0) {
-		printf("%s\n", @args_info@_purpose);
+	        printf("%s\n", @args_info@_purpose());
 	}
 
 	if (len_usage || len_purpose) {
 		printf("\n");
 	}
 
-	if (strlen(@args_info@_description) > 0) {
-		printf("%s\n\n", @args_info@_description);
+	if (strlen(@args_info@_description()) > 0) {
+	        printf("%s\n\n", @args_info@_description());
 	}
 }
 
