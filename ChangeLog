@@ -1,5 +1,6 @@
 2020-04-23 Grégoire Scano <gregoire.scano@malloc.fr>
 
+	* po/POTFILES.in, po/fr.po, po/gengetopt.po: update translations
 	* src/skels/dependant_option.h_skel, src/skels/group_option.h_skel,
 	* src/skels/required_option.h_skel: pass generated strings in
 	skeletons as fprintf arguments instead of replacing them the fprintf
