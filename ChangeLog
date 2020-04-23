@@ -1,3 +1,10 @@
+2020-04-23 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/skels/dependant_option.h_skel, src/skels/group_option.h_skel,
+	* src/skels/required_option.h_skel: pass generated strings in
+	skeletons as fprintf arguments instead of replacing them the fprintf
+	format string.
+
 2020-04-08 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/gm.cc, src/skels/print_help_string.h_skel: do not call gettext

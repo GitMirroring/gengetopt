@@ -1,5 +1,9 @@
 if (args_info->@group_var_name@_group_counter @Comparison_rule@)
   {
-    fprintf (stderr, ngettext("%s: %d option of group @group_name@ was given. @number_required@ is required%s.\n", "%s: %d options of group @group_name@ were given. @number_required@ is required%s.\n", args_info->@group_var_name@_group_counter), @package_var_name@, args_info->@group_var_name@_group_counter, (additional_error ? additional_error : ""));
+    fprintf (stderr, ngettext("%s: %d option of group %s was given. %s is required%s.\n",
+			      "%s: %d options of group %s were given. %s is required%s.\n",
+			      args_info->@group_var_name@_group_counter),
+	     @package_var_name@, args_info->@group_var_name@_group_counter,
+	     "@group_name@", "@number_required@", (additional_error ? additional_error : ""));
     error_occurred = 1;
   }
