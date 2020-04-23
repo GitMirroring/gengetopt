@@ -124,10 +124,10 @@ AM_CONDITIONAL(NO_CROSSCOMPILING, test "$cross_compiling" = no )
 AH_TEMPLATE(HAVE_LONG_LONG)
 
 AC_CONFIG_FILES([
-	po/Makefile.in
 	Makefile
 	doc/Makefile
 	gl/Makefile
+	po/Makefile.in
 	src/Makefile
 	src/skels/Makefile
 	src/tests/Makefile
