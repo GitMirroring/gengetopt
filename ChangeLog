@@ -1,3 +1,9 @@
+2020-04-24 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* po/Makevars: make xgettext scan the generated cmdline.c file,
+	it is now necessary to compile gengetopt with itself to add the
+	strings to the catalog.
+
 2020-04-23 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* po/POTFILES.in, po/fr.po, po/gengetopt.po: update translations

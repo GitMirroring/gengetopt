@@ -76,3 +76,10 @@ PO_DEPENDS_ON_POT = no
 # "no".  Set this to no if the POT file and PO files are maintained
 # externally.
 DIST_DEPENDS_ON_UPDATE_PO = no
+
+# Additional rules for generated files
+POTFILES += ../src/cmdline.c
+XGETTEXT_OPTIONS += --directory=$(top_builddir) src/cmdline.c
+
+../src/cmdline.c: $(top_srcdir)/src/cmdline.ggo
+	$(MAKE) $(AM_MAKEFLAGS) -C ../src cmdline.c
