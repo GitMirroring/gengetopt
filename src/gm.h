@@ -47,6 +47,7 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
   string comment;
   char *unnamed_options;
   string show_required_string;
+  string autocompletion_shells;
 
   bool long_help;
   bool no_handle_help;
@@ -86,6 +87,9 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
   int generate_header_file();
   int generate_source();
 
+  int generate_autocompletion_scripts();
+  int generate_bash_autocompletion_script(ostream &stream);
+  
   string generate_getopt_string();
 
   // to be implemented in header_gen_class
@@ -144,7 +148,8 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
                         const string &outdir,
                         const string &header_outdir,
                         const string &src_outdir,
-                        const string &show_required);
+                        const string &show_required,
+			const string &autocompletion_shells);
 
   int generate();
 

@@ -291,7 +291,8 @@ main (int argc, char **argv)
      output_dir,
      header_output_dir,
      src_output_dir,
-     (args_info.show_required_given ? args_info.show_required_arg : ""));
+     (args_info.show_required_given ? args_info.show_required_arg : ""),
+     args_info.autocomplete_arg);
 
   if (! gengetopt_package && (args_info.show_version_given || args_info.show_help_given))
     {

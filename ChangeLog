@@ -1,3 +1,8 @@
+2020-04-27 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/cmdline.ggo, src/gengetopt.cc, src/gm.cc, src/gm.h: add
+	entry point for bash autocompletion option.
+
 2019-05-30  Tomas Volf <wolf@wolfsden.cz>
 
 	* --unamed command line option renamed to --unnamed, old still
