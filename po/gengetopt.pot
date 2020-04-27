@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNU gengetopt 2.23\n"
 "Report-Msgid-Bugs-To: bug-gengetopt@gnu.org\n"
-"POT-Creation-Date: 2020-04-23 15:51+0800\n"
+"POT-Creation-Date: 2020-04-27 11:11+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,4 +98,333 @@ msgstr ""
 #: src/yyerror.cc:44
 #, c-format
 msgid "%s:%d: %*s\n"
+msgstr ""
+
+#: src/cmdline.c:40
+msgid ""
+"This program generates a C function that uses getopt_long function\n"
+"to parse the command line options, validate them and fill a struct."
+msgstr ""
+
+#: src/cmdline.c:42
+msgid " [OPTION]..."
+msgstr ""
+
+#: src/cmdline.c:53
+msgid "  -h, --help                    Print help and exit"
+msgstr ""
+
+#: src/cmdline.c:54
+msgid ""
+"      --detailed-help           Print help, including all details and "
+"hidden\n"
+"                                  options, and exit"
+msgstr ""
+
+#: src/cmdline.c:55
+msgid ""
+"      --full-help               Print help, including hidden options, and "
+"exit"
+msgstr ""
+
+#: src/cmdline.c:56
+msgid "  -V, --version                 Print version and exit"
+msgstr ""
+
+#: src/cmdline.c:57
+msgid ""
+"\n"
+"Main options:"
+msgstr ""
+
+#: src/cmdline.c:59
+msgid "  -i, --input=filename          input file (default std input)"
+msgstr ""
+
+#: src/cmdline.c:60
+msgid ""
+"  -f, --func-name=name          name of generated function\n"
+"                                  (default=`cmdline_parser')"
+msgstr ""
+
+#: src/cmdline.c:61
+msgid ""
+"  -a, --arg-struct-name=name    name of generated args info struct\n"
+"                                  (default=`gengetopt_args_info')"
+msgstr ""
+
+#: src/cmdline.c:62
+msgid ""
+"  -F, --file-name=name          name of generated file  (default=`cmdline')"
+msgstr ""
+
+#: src/cmdline.c:63
+msgid "      --output-dir=path         output directory"
+msgstr ""
+
+#: src/cmdline.c:64
+msgid ""
+"  \n"
+"  if this option is not specified, the files are generated in the current\n"
+"  directory.\n"
+msgstr ""
+
+#: src/cmdline.c:65
+msgid "      --header-output-dir=path  header output directory"
+msgstr ""
+
+#: src/cmdline.c:66
+msgid "      --src-output-dir=path     source output directory"
+msgstr ""
+
+#: src/cmdline.c:67
+msgid "  -c, --c-extension=ext         extension of c file  (default=`c')"
+msgstr ""
+
+#: src/cmdline.c:68
+msgid "  -H, --header-extension=ext    extension of header file  (default=`h')"
+msgstr ""
+
+#: src/cmdline.c:69
+msgid "  -l, --long-help               long usage line in help"
+msgstr ""
+
+#: src/cmdline.c:70
+msgid ""
+"  \n"
+"  The usage line will print all the options, e.g.,\n"
+"\n"
+"  sample1 -iINT|--int-opt=INT [-h|--help]\n"
+msgstr ""
+
+#: src/cmdline.c:71
+msgid ""
+"      --default-optional        by default, an option is considered optional "
+"if\n"
+"                                  not specified otherwise"
+msgstr ""
+
+#: src/cmdline.c:72
+msgid ""
+"  -u, --unnamed-opts[=STRING]   accept options without names (e.g., file "
+"names)\n"
+"                                  (default=`FILE')"
+msgstr ""
+
+#: src/cmdline.c:73
+msgid ""
+"      --unamed-opts[=STRING]    synonym for --unnamed-opts, accepted for\n"
+"                                  backwards compatibility  (default=`FILE')"
+msgstr ""
+
+#: src/cmdline.c:74
+msgid ""
+"\n"
+"The parser generated is thought to be used to parse the command line "
+"arguments.\n"
+"However, you can also generate parsers for configuration files, or strings "
+"that\n"
+"contain the arguments to parse, by using the following two options.\n"
+msgstr ""
+
+#: src/cmdline.c:75
+msgid "  -C, --conf-parser             generate a config file parser"
+msgstr ""
+
+#: src/cmdline.c:76
+msgid ""
+"  -S, --string-parser           generate a string parser (the string "
+"contains\n"
+"                                  the command line)"
+msgstr ""
+
+#: src/cmdline.c:77
+msgid ""
+"\n"
+"Additional options:"
+msgstr ""
+
+#: src/cmdline.c:78
+msgid ""
+"  -G, --include-getopt          adds the code for getopt_long in the "
+"generated\n"
+"                                  C file"
+msgstr ""
+
+#: src/cmdline.c:79
+msgid "  -n, --no-handle-help          do not handle --help|-h automatically"
+msgstr ""
+
+#: src/cmdline.c:80
+msgid ""
+"  \n"
+"  If --no-handle-help is specified, the command line option --help|-h will "
+"not\n"
+"  be handled automatically, so the programmer will be able to print some "
+"other\n"
+"  information; then the function for printing the standard help output can "
+"be\n"
+"  used; this function is called <parser-name>_print_help.\n"
+"\n"
+"  Notice that, although the programmer can handle --help|-h manually, the\n"
+"  parser will return after finding such option: the other command line "
+"options,\n"
+"  if any, will be ignored.  In case you want to have full control on --help|-"
+"h,\n"
+"  you should use --ho-help.\n"
+msgstr ""
+
+#: src/cmdline.c:81
+msgid "      --no-help                 do not add --help|-h automatically"
+msgstr ""
+
+#: src/cmdline.c:82
+msgid ""
+"  \n"
+"  With this option you can disable the automatic addition of options --help|-"
+"h.\n"
+"  The programmer will then be able to add this option in the input file and\n"
+"  handle it as he sees fit.  Notice that --no-help will also disable the\n"
+"  automatic options --detailed-help and --full-help.\n"
+"\n"
+"  The programmer can still define options with short character h as he "
+"wants,\n"
+"  but he cannot define options help, unless he specifies --no-help "
+"(otherwise\n"
+"  an error will be printed).\n"
+msgstr ""
+
+#: src/cmdline.c:83
+msgid ""
+"  -N, --no-handle-version       do not handle --version|-V automatically"
+msgstr ""
+
+#: src/cmdline.c:84
+msgid "      --no-version              do not add --version|-V automatically"
+msgstr ""
+
+#: src/cmdline.c:85
+msgid ""
+"  \n"
+"  See above the details about --no-handle-help and --no-help, respectively.\n"
+msgstr ""
+
+#: src/cmdline.c:86
+msgid "  -e, --no-handle-error         do not exit on errors"
+msgstr ""
+
+#: src/cmdline.c:87
+msgid ""
+"  \n"
+"  With this option, if the generated parser encounters an error (e.g., an\n"
+"  unknown option) it does not make the main program exit; instead, the "
+"parser\n"
+"  function returns a value different 0, and the main program can print a "
+"help\n"
+"  message.\n"
+msgstr ""
+
+#: src/cmdline.c:88
+msgid ""
+"      --show-required[=STRING]  in the output of help will specify which\n"
+"                                  options are mandatory, by using the "
+"optional\n"
+"                                  passed string  (default=`(mandatory)')"
+msgstr ""
+
+#: src/cmdline.c:89
+msgid "      --strict-hidden           completely hide hidden options"
+msgstr ""
+
+#: src/cmdline.c:90
+msgid ""
+"  -g, --gen-version             put gengetopt version in the generated file\n"
+"                                  (default=on)"
+msgstr ""
+
+#: src/cmdline.c:91
+msgid ""
+"      --set-package=STRING      set the package name (override package "
+"defined\n"
+"                                  in the .ggo file)"
+msgstr ""
+
+#: src/cmdline.c:92
+msgid ""
+"      --set-version=STRING      set the version number (override version\n"
+"                                  defined in the .ggo file)"
+msgstr ""
+
+#: src/cmdline.c:93
+msgid ""
+"      --show-help               show the output of --help instead of "
+"generating\n"
+"                                  code"
+msgstr ""
+
+#: src/cmdline.c:94
+msgid ""
+"      --show-full-help          show the output of --full-help (i.e., "
+"including\n"
+"                                  hidden options) instead of generating code"
+msgstr ""
+
+#: src/cmdline.c:95
+msgid ""
+"      --show-detailed-help      show the output of --detailed-help (i.e.,\n"
+"                                  including details and hidden options) "
+"instead\n"
+"                                  of generating code"
+msgstr ""
+
+#: src/cmdline.c:96
+msgid ""
+"      --show-version            show the output of --version instead of\n"
+"                                  generating code"
+msgstr ""
+
+#: src/cmdline.c:97
+msgid ""
+"\n"
+"Please refer to the info manual for further explanations."
+msgstr ""
+
+#: src/cmdline.c:374
+#, c-format
+msgid "Usage: %s %s\n"
+msgstr ""
+
+#: src/cmdline.c:501
+#, c-format
+msgid "%s=\"%s\"\n"
+msgstr ""
+
+#: src/cmdline.c:503
+#, c-format
+msgid "%s\n"
+msgstr ""
+
+#: src/cmdline.c:515
+#, c-format
+msgid "%s: cannot dump options to stream\n"
+msgstr ""
+
+#: src/cmdline.c:603
+#, c-format
+msgid "%s: cannot open file for writing: %s\n"
+msgstr ""
+
+#: src/cmdline.c:719
+#, c-format
+msgid "%s: `--%s' (`-%c') option given more than once%s\n"
+msgstr ""
+
+#: src/cmdline.c:723
+#, c-format
+msgid "%s: `--%s' option given more than once%s\n"
+msgstr ""
+
+#: src/cmdline.c:1322
+#, c-format
+msgid "%s: option unknown: %c%s\n"
 msgstr ""

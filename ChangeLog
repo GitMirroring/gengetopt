@@ -1,3 +1,8 @@
+2020-04-27 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* po/gengetopt.pot, po/fr.po: compile gengetopt with the new
+	version of itself to add skeleton strings to the catalog.
+
 2020-04-24 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* po/Makevars: make xgettext scan the generated cmdline.c file,
