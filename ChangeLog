@@ -2,6 +2,8 @@
 
 	* po/gengetopt.pot, po/fr.po: compile gengetopt with the new
 	version of itself to add skeleton strings to the catalog.
+	* po/fr.po: set translations to fuzzy pending translator update.
+	* src/gengetopt.cc: set locale to LC_ALL.
 
 2020-04-24 Grégoire Scano <gregoire.scano@malloc.fr>
 

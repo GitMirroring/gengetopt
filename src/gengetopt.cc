@@ -104,7 +104,7 @@ struct gengetopt_args_info args_info ;
 int
 main (int argc, char **argv)
 {
-  setlocale (LC_MESSAGES, "");
+  setlocale (LC_ALL, "");
   if(bindtextdomain (PACKAGE, LOCALEDIR) == NULL ||
      textdomain (PACKAGE) == NULL)
     exit(-1);
