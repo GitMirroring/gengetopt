@@ -1,7 +1,14 @@
+2020-05-06 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/gm.cc, src/skels/Makefile.am,
+	* src/skels/auto_bash_completion.sh.skel: generate bash file.
+	* src/cmdline.ggo, src/gengetopt.cc, src/gm.h, src/gm.cc: use
+	enum instead of string for shell autocompletion selection.
+
 2020-04-27 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/cmdline.ggo, src/gengetopt.cc, src/gm.cc, src/gm.h: add
-	entry point for bash autocompletion option.
+	entry point for bash autocompletion feature.
 
 2019-05-30  Tomas Volf <wolf@wolfsden.cz>
 

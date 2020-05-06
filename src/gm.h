@@ -21,6 +21,8 @@
 #ifndef _GM_H
 #define _GM_H
 
+#include "cmdline.h"
+
 #include "skels/header.h"
 #include "skels/c_source.h"
 
@@ -47,7 +49,7 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
   string comment;
   char *unnamed_options;
   string show_required_string;
-  string autocompletion_shells;
+  const char ** shell_autocompletion;
 
   bool long_help;
   bool no_handle_help;
@@ -149,7 +151,7 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
                         const string &header_outdir,
                         const string &src_outdir,
                         const string &show_required,
-			const string &autocompletion_shells);
+			const char ** shell_autocompletion);
 
   int generate();
 

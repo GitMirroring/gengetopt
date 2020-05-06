@@ -69,6 +69,7 @@ extern "C"
 #include "skels/custom_getopt_gen.h"
 #include "skels/check_modes.h"
 #include "skels/enum_decl.h"
+#include "skels/bash_autocompletion.sh.h"
 #include "gm_utils.h"
 #include "fileutils.h"
 
@@ -171,7 +172,7 @@ CmdlineParserCreator::CmdlineParserCreator (char *function_name,
                                             const string &header_outdir,
                                             const string &src_outdir,
                                             const string &show_required,
-					    const string &autocompletion_shells) :
+					    const char ** shell_autocompletion) :
   filename (filename_),
   args_info_name (struct_name),
   output_dir (outdir),
@@ -180,7 +181,7 @@ CmdlineParserCreator::CmdlineParserCreator (char *function_name,
   comment (comment_),
   unnamed_options (unnamed_options_),
   show_required_string (show_required),
-  autocompletion_shells (autocompletion_shells),
+  shell_autocompletion (shell_autocompletion),
   long_help (long_help_), no_handle_help (no_handle_help_),
   no_help (no_help_),
   no_handle_version (no_handle_version_),
@@ -2003,29 +2004,34 @@ int
 CmdlineParserCreator::generate_autocompletion_scripts()
 {
   const char * shells[] = { "bash" };
-  
-  for (unsigned int i = 0; i < sizeof(shells)/sizeof(shells[0]); ++i)
+
+  const char ** shell = this->shell_autocompletion;
+
+  while(*shell != nullptr)
     {
-      const char * & shell = shells[i];
-      
-      if (strstr (this->autocompletion_shells.c_str(), shell) != NULL)
+      for (unsigned int i = 0; i < sizeof(shells)/sizeof(shells[0]); ++i)
 	{
-	  ofstream *output_stream = open_fstream ((string(this->parser_function_name) + shell).c_str());
-	  if(output_stream == nullptr) return 1;
-	  int status = 0;
-	  
-	  switch(i)
+	  if (strcmp (*shell, shells[i]) == 0)
 	    {
-	    case  0: status = this->generate_bash_autocompletion_script(*output_stream); break;
-	    default: status = 1;
+	      ofstream *output_stream = open_fstream ((string(this->filename) + "." + *shell).c_str());
+	      if(output_stream == nullptr) return 1;
+	      int status = 0;
+
+	      switch(i)
+		{
+		case  0: status = this->generate_bash_autocompletion_script(*output_stream); break;
+		default: status = 1;
+		}
+
+	      output_stream->close ();
+	      delete output_stream;
+
+	      if (status)
+		return status;
 	    }
-	  
-	  output_stream->close ();
-	  delete output_stream;
-	  
-	  if (status)
-	    return status;
 	}
+
+      ++shell;
     }
 
   return 0;
@@ -2033,6 +2039,21 @@ CmdlineParserCreator::generate_autocompletion_scripts()
 
 int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 {
+  bash_autocompletion_gen_class script;
+
+  if(gengetopt_package)
+    script.set_command(gengetopt_package);
+  else
+    script.set_command("<command>");
+
+  std::string options;
+  for(gengetopt_option_list::const_iterator it = gengetopt_options.begin();
+      it != gengetopt_options.end(); ++it)
+    {
+
+    }
+
+  script.generate_bash_autocompletion(stream);
   
   return 0;
 }

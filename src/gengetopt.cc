@@ -292,7 +292,7 @@ main (int argc, char **argv)
      header_output_dir,
      src_output_dir,
      (args_info.show_required_given ? args_info.show_required_arg : ""),
-     args_info.autocomplete_arg);
+     (const char **)args_info.autocomplete_orig);
 
   if (! gengetopt_package && (args_info.show_version_given || args_info.show_help_given))
     {
