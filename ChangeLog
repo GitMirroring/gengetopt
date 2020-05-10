@@ -1,7 +1,8 @@
 2020-05-10 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* auto/completion.sh, auto/test.sh, auto/script: handle options
-	with arguments in a more flexible manner.
+	with arguments in a more flexible manner, add support for multiple
+	and dependent options.
 
 2020-05-07 Grégoire Scano <gregoire.scano@malloc.fr>
 

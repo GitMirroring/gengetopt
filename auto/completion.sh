@@ -25,22 +25,44 @@ autocomplete_argument3_arg() {
 
 autocomplete_option () {
 
-    declare -a options=(
-	"--argument1"
-	"--argument2"
-	"--argument3"
-	"--no-argument1"
-	"--no-argument2"
+    declare -A options=(
+	["--argument1"]=1
+	["--argument2"]=1
+	["--argument3"]=1
+	["--no-argument1"]=1
+	["--no-argument2"]=1
+	["--prerequesite1"]=1
+	["--prerequesite2"]=1
+	["--prerequesite3"]=2
+	["--prerequesite4"]=2
+	["--prerequesite5"]=1
     )
 
-    # Handle 'option'
-    for option in ${options[@]}; do
-	for argument in ${@:1}; do
-	    if [[ "$argument" = "$option" ]]; then
-		option=""
-		break
+    # Handle 'dependon'
+    for argument in "${@:1}"; do
+	case "$argument" in
+	    "--prerequesite1") options["--depend-on1"]=1 ;;
+	    "--prerequesite2") options["--depend-on2"]=2 ;;
+	    "--prerequesite3") options["--depend-on3"]=1 ;;
+	    "--prerequesite4") options["--depend-on4"]=2 ;;
+	    "--prerequesite5") options["--depend-on5"]=1 ;;
+	    "--depend-on5") options["--depend-on6"]=1 ;;
+	esac
+    done
+
+    # Handle 'multiple'
+    for argument in "${@:1}"; do
+	if [[ "${options[$argument]}+_" ]]; then
+	    if [[ "${options[$argument]}" -le 1 ]]; then
+		unset options["$argument"]
+	    else
+		options["$argument"]=$((${options[$argument]}-1))
 	    fi
-	done
+	fi
+    done
+
+    # Handle 'option'
+    for option in "${!options[@]}"; do
 	echo "$option"
     done
 }
@@ -50,7 +72,7 @@ autocomplete () {
     # Handle 'argtype'
     case "$3" in
 	"--argument1") return ;;
-	"--argument2") autocomplete_with "autocomplete_argument2_arg"; return ;;
+	"--argument2") autocomplete_with autocomplete_argument2_arg; return ;;
     esac
 
     # Handle 'argoptional'
