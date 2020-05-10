@@ -1,3 +1,8 @@
+2020-05-10 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* auto/completion.sh, auto/test.sh, auto/script: handle options
+	with arguments in a more flexible manner.
+
 2020-05-07 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* auto/completion.sh, auto/test.sh, auto/script: create a basic
