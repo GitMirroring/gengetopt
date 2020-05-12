@@ -23,20 +23,109 @@ autocomplete_argument3_arg() {
     COMPREPLY=($(IFS=$' |'; compgen -W "3valueA | 3valueB | 3valueC" -- "$2"))
 }
 
+autocomplete_option__remove () {
+    for mode in "$@"; do
+	unset $mode
+	declare -A $mode
+    done
+}
+
+autocomplete_option__use () {
+    unset $1
+    declare -A $1
+    return $2
+}
+
 autocomplete_option () {
 
+    # Handle 'option'
     declare -A options=(
 	["--argument1"]=1
 	["--argument2"]=1
 	["--argument3"]=1
-	["--no-argument1"]=1
+	["--no-argument1"]=0
 	["--no-argument2"]=1
+	["--no-argument3"]=2
 	["--prerequesite1"]=1
 	["--prerequesite2"]=1
 	["--prerequesite3"]=2
 	["--prerequesite4"]=2
 	["--prerequesite5"]=1
     )
+
+    # Handle 'mode'
+    declare -a modes=(
+	"modeA"
+	"modeB"
+    )
+
+    declare -A modeA=(
+	["--modeA-1"]=0
+	["--modeA-2"]=1
+	["--modeA-3"]=2
+    )
+
+    declare -A modeB=(
+	["--modeB-1"]=1
+	["--modeB-2"]=2
+    )
+
+    for argument in "${@:1}"; do
+	for mode in "${modes[@]}"; do
+	    local -n modearray="${mode}"
+	    if [[ "${modearray[$argument]+_}" ]]; then
+		for othermode in "${modes[@]}"; do
+		    if [[ "$othermode" != "$mode" ]]; then
+			unset $othermode
+			declare -A $othermode
+		    fi
+		done
+		break
+	    fi
+	done
+    done
+
+    for mode in "${modes[@]}"; do
+	local -n modearray="${mode}"
+	for option in "${!modearray[@]}"; do
+	    options["$option"]+="${modearray[$option]}"
+	done
+    done
+
+    # Handle 'group'
+    declare -a groups=(
+	"groupA"
+	"groupB"
+    )
+
+    declare -A groupA=(
+	["--groupA-1"]=0
+	["--groupA-2"]=1
+	["--groupA-3"]=2
+    )
+
+    declare -A groupB=(
+	["--groupB-1"]=1
+	["--groupB-2"]=2
+    )
+
+    for argument in "${@:1}"; do
+	for group in "${groups[@]}"; do
+	    local -n grouparray="${group}"
+	    if [[ "${grouparray[$argument]+_}" ]]; then
+		local -i multiple="${grouparray[$argument]}"
+		unset grouparray
+		declare -A grouparray=(["$argument"]="$multiple")
+	    fi
+	done
+    done
+
+    for group in "${groups[@]}"; do
+	local -n grouparray="${group}"
+	for option in "${!grouparray[@]}"; do
+	    options["$option"]+="${grouparray[$option]}"
+	done
+    done
 
     # Handle 'dependon'
     for argument in "${@:1}"; do
@@ -52,10 +141,11 @@ autocomplete_option () {
 
     # Handle 'multiple'
     for argument in "${@:1}"; do
-	if [[ "${options[$argument]}+_" ]]; then
-	    if [[ "${options[$argument]}" -le 1 ]]; then
+	if [[ "${options[$argument]+_}" ]]; then
+	    # 0 is infinite
+	    if [[ "${options[$argument]}" -eq 1 ]]; then
 		unset options["$argument"]
-	    else
+	    elif [[ "${options[$argument]}" -gt 1 ]]; then
 		options["$argument"]=$((${options[$argument]}-1))
 	    fi
 	fi
