@@ -5,7 +5,7 @@ autocomplete_with () {
     return 124
 }
 
-autocomplete_loopback() {
+autocomplete_loopback () {
     if [[ "${#COMPREPLY[@]}" -eq 1 ]]; then
 	autocomplete_with "autocomplete"
     fi
@@ -13,27 +13,26 @@ autocomplete_loopback() {
     return 0
 }
 
-autocomplete_argument2_arg() {
+autocomplete_argument2_arg () {
     COMPREPLY=($(IFS=$' |'; compgen -W "2valueA | 2valueB" -- "$2"))
 
     autocomplete_loopback
 }
 
-autocomplete_argument3_arg() {
+autocomplete_argument3_arg () {
     COMPREPLY=($(IFS=$' |'; compgen -W "3valueA | 3valueB | 3valueC" -- "$2"))
 }
 
-autocomplete_option__remove () {
-    for mode in "$@"; do
-	unset $mode
-	declare -A $mode
-    done
+autocomplete_argument4_arg () {
+    compopt -o dirnames
+    COMPREPLY=($(compgen -A directory -- "$2"))
+
+    autocomplete_loopback
 }
 
-autocomplete_option__use () {
-    unset $1
-    declare -A $1
-    return $2
+autocomplete_unnamed () {
+    compopt -o filenames
+    COMPREPLY=($(compgen -A file -- "$2"))
 }
 
 autocomplete_option () {
@@ -43,6 +42,7 @@ autocomplete_option () {
 	["--argument1"]=1
 	["--argument2"]=1
 	["--argument3"]=1
+	["--argument4"]=0
 	["--no-argument1"]=0
 	["--no-argument2"]=1
 	["--no-argument3"]=2
@@ -163,11 +163,13 @@ autocomplete () {
     case "$3" in
 	"--argument1") return ;;
 	"--argument2") autocomplete_with autocomplete_argument2_arg; return ;;
+	"--argument4") autocomplete_with autocomplete_argument4_arg; return ;;
     esac
 
-    # Handle 'argoptional'
+    # Handle 'argoptional' and 'unnamed'
     case "$3" in
 	"--argument3") autocomplete_argument3_arg "$1" "$2" "$3" ;;
+	*) autocomplete_unnamed "$1" "$2" "$3"
     esac
 
     # Handle 'option'
