@@ -1,5 +1,9 @@
 2020-05-15 Grégoire Scano <gregoire.scano@malloc.fr>
 
+	* auto/completion.sh: correct directory autocompletion.
+
+2020-05-15 Grégoire Scano <gregoire.scano@malloc.fr>
+
 	* auto/completion.sh: handle unnamed parameters.
 
 2020-05-12 Grégoire Scano <gregoire.scano@malloc.fr>

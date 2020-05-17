@@ -24,8 +24,16 @@ autocomplete_argument3_arg () {
 }
 
 autocomplete_argument4_arg () {
-    compopt -o dirnames
-    COMPREPLY=($(compgen -A directory -- "$2"))
+    COMPREPLY=($(compgen -o dirnames -A directory -- "$2"))
+
+    if [[ "${#COMPREPLY[@]}" -eq 1 ]]; then
+	local dir="${COMPREPLY[0]}"
+	COMPREPLY=($(compgen -o dirnames -A directory -- "$dir/"))
+
+	if [[ "${#COMPREPLY[@]}" -le 1 ]]; then
+	    COMPREPLY=("$dir")
+	fi
+    fi
 
     autocomplete_loopback
 }
@@ -169,7 +177,7 @@ autocomplete () {
     # Handle 'argoptional' and 'unnamed'
     case "$3" in
 	"--argument3") autocomplete_argument3_arg "$1" "$2" "$3" ;;
-	*) autocomplete_unnamed "$1" "$2" "$3"
+	*) autocomplete_unnamed "$1" "$2" "$3" ;;
     esac
 
     # Handle 'option'
