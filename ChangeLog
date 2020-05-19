@@ -1,7 +1,8 @@
 2020-05-19 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* auto/completion.sh: change loop order for groups and
-	modes; change dependon handling.
+	modes; change dependon handling. Skip the first argument
+	in for loops.
 
 2020-05-15 Grégoire Scano <gregoire.scano@malloc.fr>
 

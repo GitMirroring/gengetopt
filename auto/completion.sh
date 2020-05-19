@@ -7,7 +7,7 @@ autocomplete_with () {
 
 autocomplete_loopback () {
     if [[ "${#COMPREPLY[@]}" -eq 1 ]]; then
-	autocomplete_with "autocomplete"
+	autocomplete_with autocomplete
     fi
 
     return 0
@@ -85,7 +85,7 @@ autocomplete_option () {
     )
 
     for mode in "${modes[@]}"; do
-	for argument in "${@:1}"; do
+	for argument in "${@}"; do
 	    local -n modearray="${mode}"
 	    if [[ "${modearray[$argument]+_}" ]]; then
 		for othermode in "${modes[@]}"; do
@@ -124,7 +124,7 @@ autocomplete_option () {
     )
 
     for group in "${groups[@]}"; do
-	for argument in "${@:1}"; do
+	for argument in "${@}"; do
 	    local -n grouparray="${group}"
 	    if [[ "${grouparray[$argument]+_}" ]]; then
 		local -i multiple="${grouparray[$argument]}"
@@ -154,7 +154,7 @@ autocomplete_option () {
     for dependent in "${!dependon[@]}"; do
 	local -i found=0
 
-	for argument in "${@:1}"; do
+	for argument in "${@}"; do
 	    if [[ "$argument" = "$dependent" ]]; then
 		found=1
 		break
@@ -164,7 +164,7 @@ autocomplete_option () {
 	if [[ "$found" -eq 1 ]]; then
 	    found=0
 
-	    for argument in "${@:1}"; do
+	    for argument in "${@}"; do
 		if [[ "$argument" = "${dependon[$dependent]}" ]]; then
 		    found=1
 		    break
@@ -181,7 +181,7 @@ autocomplete_option () {
     done
 
     # Handle 'multiple'
-    for argument in "${@:1}"; do
+    for argument in "$@"; do
 	if [[ "${options[$argument]+_}" ]]; then
 	    # 0 is infinite
 	    if [[ "${options[$argument]}" -eq 1 ]]; then
@@ -215,7 +215,7 @@ autocomplete () {
 
     # Handle 'option'
     local IFS=$'\n'
-    COMPREPLY+=($(compgen -W "$(autocomplete_option ${COMP_WORDS[@]})" -- "$2"))
+    COMPREPLY+=($(compgen -W "$(autocomplete_option ${COMP_WORDS[@]:1})" -- "$2"))
 }
 
 autocomplete_with autocomplete
