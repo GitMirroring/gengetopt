@@ -59,6 +59,12 @@ autocomplete_option () {
 	["--prerequesite3"]=2
 	["--prerequesite4"]=2
 	["--prerequesite5"]=1
+	["--depend-on1"]=1
+	["--depend-on2"]=2
+	["--depend-on3"]=1
+	["--depend-on4"]=2
+	["--depend-on5"]=1
+	["--depend-on6"]=1
     )
 
     # Handle 'mode'
@@ -78,8 +84,8 @@ autocomplete_option () {
 	["--modeB-2"]=2
     )
 
-    for argument in "${@:1}"; do
-	for mode in "${modes[@]}"; do
+    for mode in "${modes[@]}"; do
+	for argument in "${@:1}"; do
 	    local -n modearray="${mode}"
 	    if [[ "${modearray[$argument]+_}" ]]; then
 		for othermode in "${modes[@]}"; do
@@ -117,8 +123,8 @@ autocomplete_option () {
 	["--groupB-2"]=2
     )
 
-    for argument in "${@:1}"; do
-	for group in "${groups[@]}"; do
+    for group in "${groups[@]}"; do
+	for argument in "${@:1}"; do
 	    local -n grouparray="${group}"
 	    if [[ "${grouparray[$argument]+_}" ]]; then
 		local -i multiple="${grouparray[$argument]}"
@@ -136,15 +142,42 @@ autocomplete_option () {
     done
 
     # Handle 'dependon'
-    for argument in "${@:1}"; do
-	case "$argument" in
-	    "--prerequesite1") options["--depend-on1"]=1 ;;
-	    "--prerequesite2") options["--depend-on2"]=2 ;;
-	    "--prerequesite3") options["--depend-on3"]=1 ;;
-	    "--prerequesite4") options["--depend-on4"]=2 ;;
-	    "--prerequesite5") options["--depend-on5"]=1 ;;
-	    "--depend-on5") options["--depend-on6"]=1 ;;
-	esac
+    declare -A dependon=(
+	["--depend-on1"]="--prerequesite1"
+	["--depend-on2"]="--prerequesite2"
+	["--depend-on3"]="--prerequesite3"
+	["--depend-on4"]="--prerequesite4"
+	["--depend-on5"]="--prerequesite5"
+	["--depend-on6"]="--depend-on5"
+    )
+
+    for dependent in "${!dependon[@]}"; do
+	local -i found=0
+
+	for argument in "${@:1}"; do
+	    if [[ "$argument" = "$dependent" ]]; then
+		found=1
+		break
+	    fi
+	done
+
+	if [[ "$found" -eq 1 ]]; then
+	    found=0
+
+	    for argument in "${@:1}"; do
+		if [[ "$argument" = "${dependon[$dependent]}" ]]; then
+		    found=1
+		    break
+		fi
+	    done
+
+	    if [[ "$found" -eq 0 ]]; then
+		local -i multiple="${options[${dependon[$dependent]}]}"
+		unset options
+		declare -A options=(["${dependon[$dependent]}"]="$multiple")
+		break
+	    fi
+	fi
     done
 
     # Handle 'multiple'
