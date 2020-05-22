@@ -28,6 +28,7 @@
 
 #include <list>
 #include <string>
+#include <map>
 
 #define TAB_LEN 2
 
@@ -88,6 +89,12 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
 
   int generate_header_file();
   int generate_source();
+
+  typedef std::map<std::string, unsigned int> autocompletion_cluster_element;
+  typedef std::map<std::string, autocompletion_cluster_element> autocompletion_cluster;
+
+  int add_to_autocompletion_cluster(autocompletion_cluster & cluster, const char * name, char short_, const char * long_, unsigned int count);
+  void print_autocompletion_cluster(autocompletion_cluster & cluster, std::stringstream & names, std::stringstream & def, const char * tab);
 
   int generate_autocompletion_scripts();
   int generate_bash_autocompletion_script(ostream &stream);

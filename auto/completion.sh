@@ -192,10 +192,7 @@ autocomplete_option () {
 	fi
     done
 
-    # Handle 'option'
-    for option in "${!options[@]}"; do
-	echo "$option"
-    done
+    echo "${!options[@]}"
 }
 
 autocomplete () {
@@ -214,8 +211,7 @@ autocomplete () {
     esac
 
     # Handle 'option'
-    local IFS=$'\n'
-    COMPREPLY+=($(compgen -W "$(autocomplete_option ${COMP_WORDS[@]:1})" -- "$2"))
+    COMPREPLY+=($(compgen -W "$(IFS=$' '; autocomplete_option ${COMP_WORDS[@]:1})" -- "$2"))
 }
 
 autocomplete_with autocomplete

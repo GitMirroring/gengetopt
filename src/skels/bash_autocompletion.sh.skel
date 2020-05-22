@@ -1,25 +1,143 @@
 #!/bin/bash
 
-_@command@_autocompletion_generate_options() {
-
+_@command@_autocomplete_with () {
+    complete -F "$1" @command@
+    return 124
 }
 
-_@command@_autocompletion (){
-    local previous current
-
-    if [[ $COMP_CWORD -gt 0 ]]; then
-	current="${COMP_WORDS[-1]}"
-
-	if [[ $COMP_CWORD -gt 1 ]]; then
-	    previous="${COMP_WORDS[-2]}"
-	fi
+_@command@_autocomplete_loopback () {
+    if [[ "${#COMPREPLY[@@]}" -eq 1 ]]; then
+	_@command@_autocomplete_with _@command@_autocomplete
     fi
 
-    case "$previous" in
-	*)
-	    options=$(_@command@_autocompletion_generate_options ${COMP_WORDS[@@]})
-	    COMPREPLY=($(compgen -W "$options" -- "$current"));;
-    esac
+    return 0
 }
 
-complete -F _@command@_autocompletion @command@
+@autocomplete_with@
+
+_@command@_autocomplete_option () {
+
+    # Handle 'option'
+    declare -A options=(
+@options@
+    )
+
+    # Handle 'mode'
+    declare -a modes=(
+@modes_names@
+    )
+    @modes_def@
+
+    for argument in "$@@"; do
+	for mode in "${modes[@@]}"; do
+	    local -n modearray="${mode}"
+	    if [[ "${modearray[$argument]+_}" ]]; then
+		for othermode in "${modes[@@]}"; do
+		    if [[ "$othermode" != "$mode" ]]; then
+			unset $othermode
+			declare -A $othermode
+		    fi
+		done
+		break
+	    fi
+	done
+    done
+
+    for mode in "${modes[@@]}"; do
+	local -n modearray="${mode}"
+	for option in "${!modearray[@@]}"; do
+	    options["$option"]+="${modearray[$option]}"
+	done
+    done
+
+    # Handle 'group'
+    declare -a groups=(
+@groups_names@
+    }
+    @groups_def@
+
+    for argument in "$@@"; do
+	for group in "${groups[@@]}"; do
+	    local -n grouparray="${group}"
+	    if [[ "${grouparray[$argument]+_}" ]]; then
+		local -i multiple="${grouparray[$argument]}"
+		unset grouparray
+		declare -A grouparray=(["$argument"]="$multiple")
+	    fi
+	done
+    done
+
+    for group in "${groups[@@]}"; do
+	local -n grouparray="${group}"
+	for option in "${!grouparray[@@]}"; do
+	    options["$option"]+="${grouparray[$option]}"
+	done
+    done
+
+    # Handle 'dependon'
+    declare -A dependon=(
+	@dependon@
+    )
+
+    for dependent in "${!dependon[@@]}"; do
+	local -i found=0
+
+	for argument in "$@@"; do
+	    if [[ "$argument" = "$dependent" ]]; then
+		found=1
+		break
+	    fi
+	done
+
+	if [[ "$found" -eq 1 ]]; then
+	    found=0
+
+	    for argument in "$@@"; do
+		if [[ "$argument" = "${dependon[$dependent]}" ]]; then
+		    found=1
+		    break
+		fi
+	    done
+
+	    if [[ "$found" -eq 0 ]]; then
+		local -i multiple="${options[${dependon[$dependent]}]}"
+		unset options
+		declare -A options=(["${dependon[$dependent]}"]="$multiple")
+		break
+	    fi
+	fi
+    done
+
+    # Handle 'multiple'
+    for argument in "$@@"; do
+	if [[ "${options[$argument]+_}" ]]; then
+	    # 0 is infinite
+	    if [[ "${options[$argument]}" -eq 1 ]]; then
+		unset options["$argument"]
+	    elif [[ "${options[$argument]}" -gt 1 ]]; then
+		options["$argument"]=$((${options[$argument]}-1))
+	    fi
+	fi
+    done
+
+    echo "${!options[@@]}"
+}
+
+_@command@_autocomplete () {
+    
+    # Handle 'argtype'
+    case "$3" in
+@argtype@
+    esac
+
+    # Handle 'argoptional' and 'unnamed'
+    case "$3" in
+@argoptional@
+	*) @unnamed@ "$1" "$2" "$3";;
+    esac
+
+    # Handle 'option'
+    COMPREPLY+=($(compgen -W "$(IFS=$' '; _@command@_autocomplete_option ${COMP_WORDS[@@]:1})" -- "$2"))
+}
+
+_@command@_autocomplete_with _@command@_autocomplete
