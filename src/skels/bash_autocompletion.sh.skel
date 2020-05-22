@@ -53,7 +53,7 @@ _@command@_autocomplete_option () {
     # Handle 'group'
     declare -a groups=(
 @groups_names@
-    }
+    )
     @groups_def@
 
     for argument in "$@@"; do
