@@ -54,6 +54,9 @@ autocomplete_option () {
 	["--no-argument1"]=0
 	["--no-argument2"]=1
 	["--no-argument3"]=2
+	["-x"]=0
+	["-y"]=1
+	["-z"]=2
 	["--prerequesite1"]=1
 	["--prerequesite2"]=1
 	["--prerequesite3"]=2
@@ -180,19 +183,44 @@ autocomplete_option () {
 	fi
     done
 
+    # Handle dual short-long
+    declare -A short=(
+	["-a"]="--no-argument1"
+	["-b"]="--no-argument2"
+	["-c"]="--no-argument3"
+    )
+
+    declare -A long2short=(
+	["--no-argument1"]="-a"
+	["--no-argument2"]="-b"
+	["--no-argument3"]="-c"
+    )
+
     # Handle 'multiple'
     for argument in "$@"; do
+	local shortarg=""
+
+	if [[ "${short[$argument]+_}" ]]; then
+	    shortarg="$argument"
+	    argument="${short[$argument]}"
+	elif [[ "${long2short[$argument]+_}" ]]; then
+	    shortarg="${long2short[$argument]}"
+	fi
+
 	if [[ "${options[$argument]+_}" ]]; then
 	    # 0 is infinite
 	    if [[ "${options[$argument]}" -eq 1 ]]; then
 		unset options["$argument"]
+		if [[ -n "$shortarg" ]]; then
+		    unset short["$shortarg"]
+		fi
 	    elif [[ "${options[$argument]}" -gt 1 ]]; then
 		options["$argument"]=$((${options[$argument]}-1))
 	    fi
 	fi
     done
 
-    echo "${!options[@]}"
+    echo "${!options[@]} ${!short[@]}"
 }
 
 autocomplete () {

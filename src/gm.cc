@@ -2098,6 +2098,8 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
   autocompletion_cluster modes;
   autocompletion_cluster groups;
   std::stringstream dependon;
+  std::stringstream shortoptions;
+  std::stringstream long2shortoptions;
   std::stringstream argtype;
   std::stringstream argoptional;
 
@@ -2145,6 +2147,12 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	    dependon << tab << "[\"--" << option.long_opt << "\"]" << "=" << "[\"" << option.dependon << "\"]" << std::endl;
 	}
 
+      if (option.short_opt != 0 && option.long_opt != nullptr)
+	{
+	  shortoptions << "[\"-" << option.short_opt << "\"]=\"" << option.long_opt << "\"" << std::endl;
+	  long2shortoptions << "[\"--" << option.long_opt << "\"]=\"" << option.short_opt << "\"" << std::endl;
+	}
+      
       if (option.type != ARG_NO && option.type != ARG_FLAG)
 	{
 	  std::string option_name;

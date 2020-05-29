@@ -108,12 +108,33 @@ _@command@_autocomplete_option () {
 	fi
     done
 
+    # Handle dual short-long
+    declare -A short=(
+@shortoptions@
+    )
+
+    declare -A long2short=(
+@long2shortoptions@
+    )
+
     # Handle 'multiple'
     for argument in "$@@"; do
+	local shortarg=""
+
+	if [[ "${short[$argument]+_}" ]]; then
+	    shortarg="$argument"
+	    argument="${short[$argument]}"
+	elif [[ "${long2short[$argument]+_}" ]]; then
+	    shortarg="${long2short[$argument]}"
+	fi
+
 	if [[ "${options[$argument]+_}" ]]; then
 	    # 0 is infinite
 	    if [[ "${options[$argument]}" -eq 1 ]]; then
 		unset options["$argument"]
+		if [[ -n "$shortarg" ]]; then
+		    unset short["$shortarg"]
+		fi
 	    elif [[ "${options[$argument]}" -gt 1 ]]; then
 		options["$argument"]=$((${options[$argument]}-1))
 	    fi
