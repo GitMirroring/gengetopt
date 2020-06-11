@@ -1,0 +1,33 @@
+package "test"
+
+purpose "Bash autocompletion test"
+
+args "--autocomplete bash"
+
+option "no-argument1" - ""
+option "no-argument2" - "" multiple(-2)
+option "no-argument3" - "" multiple(2-3)
+option "no-argument4" - "" multiple
+
+option "argument1" - ""
+option "argument2" - "" values="2valueA","2valueB"
+option "argument3" - "" values="3valueA","3valueB","3valueC" dependon="no-argument2"
+option "argument4" - "" multiple
+option "argument5" - "" multiple(1-2) values="5valueA","5valueB" argoptional
+
+defmode "modeA"
+modeoption "modeA1" - "" mode="modeA"
+modeoption "modeA2" - "" mode="modeA" dependon="groupA3"
+modeoption "modeA3" - "" mode="modeA" values="3valueA","3valueB"
+
+defgroup "groupA"
+groupoption "groupA1" - "" group="groupA"
+groupoption "groupA2" - "" group="groupA" dependon="modeA1"
+groupoption "groupA3" - "" group="groupA" multiple
+
+defgroup "groupB"
+groupoption "groupB1" - "" group="groupB"
+groupoption "groupB2" - "" group="groupB" dependon="groupA1"
+
+option "shorta" a ""
+option "shortb" b "" dependon="shorta" multiple

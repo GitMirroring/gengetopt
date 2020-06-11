@@ -1,0 +1,84 @@
+#!/bin/bash
+
+source test_bash_autocompletion.bash || true
+
+# Pass either '++'/'--' to check what has/hasn't been generated
+test_ () {
+    local -a args
+    local -a find
+    local -a skip
+    local -n current=args
+
+    for arg in "${@:1}"; do
+	if [[ "$arg" = ++ ]]; then
+	    local -n current=find
+	elif [[ "$arg" = -- ]]; then
+	    local -n current=skip
+	else
+	    current+=("$arg")
+	fi
+    done
+
+    result=$(_test_autocomplete_option "${args[@]}" "")
+
+    for res in $(echo $result | tr " " "\n"); do
+	for s in "${skip[@]}"; do
+	    if [[ "$res" = "$s" ]]; then
+		echo "Test #$1: '$s' found! ($result)"
+		exit 1
+	    fi
+	done
+    done
+
+    for f in "${find[@]}"; do
+	local -i found=0
+	for res in $(echo $result | tr " " "\n"); do
+	    if [[ "$res" = "$f" ]]; then
+		found=1
+		break
+	    fi
+	done
+
+	if [[ "$found" -eq 0 ]]; then
+	    echo "Test #$1: '$f' not found! ($result)"
+	    exit 1
+	fi
+    done
+}
+
+test_ "dep" -- "--argument3" "--modeA-2" "--groupA-2" "--groupB-2"
+
+test_ "n01" "--no-argument1" -- "--no-argument1"
+test_ "n02" "--no-argument2" ++ "--no-argument2"
+test_ "n03" "--no-argument2" "--no-argument2" -- "--no-argument2"
+test_ "n04" "--no-argument3" ++ "--no-argument3"
+test_ "n05" "--no-argument3" "--no-argument3" ++ "--no-argument3"
+test_ "n06" "--no-argument3" "--no-argument3" "--no-argument3" -- "--no-argument3"
+test_ "n07" "--no-argument4" "--no-argument4" "--no-argument4" "--no-argument4" ++ "--no-argument4"
+
+test_ "a01" "--argument1"
+test_ "a02" "--argument1" "anyvalue" -- "--argument1"
+test_ "a03" "--argument2" "2valueA" -- "--argument2"
+test_ "a04" "--no-argument3" "--argument3" "3valueC" -- "--argument3"
+test_ "a05" "--argument4"
+test_ "a06" "--argument4" "avalue" ++ "--argument4"
+test_ "a07" "--argument4" "avalue" "--argument4"
+test_ "a08" "--argument4" "avalue" "--argument4" "anothervalue" ++ "--argument4"
+test_ "a09" "--argument5" "5valueA" ++ "--argument5"
+
+test_ "mA1" "--modeA1" ++ "--modeA3" -- "--modeA2" -- "--modeB1" "--modeB2" "--modeB3"
+test_ "mA2" "--modeA1" "--groupA3" ++ "--modeA2" "--modeA3" -- "--modeB1" "--modeB2" "--modeB3"
+test_ "mA3" "--modeA1" "--modeA3" -- "--modeB1" "--modeB2" "--modeB3"
+
+test_ "gA1" "--groupA1" -- "--groupA2" "--groupA3" ++ "--groupB1" "--groupB2"
+test_ "gA2" "--modeA1" "--groupA2" -- "--groupA1" "--groupA3" ++ "--groupB1"
+test_ "gA3" "--groupA3" ++ "--groupA3" ++ "--groupB1"
+test_ "gA4" "--groupA3" "--groupA3" ++ "--groupA3"
+
+test_ "gB1" "--groupA1" "--groupB2" -- "--groupA2" "--groupA3" -- "--groupB1" "--groupB2"
+
+test_ "s01" ++ "-a" -- "-b" "--shortb"
+test_ "s02" "--shorta" -- "-a" "--shorta" ++ "-b" "--shortb"
+test_ "s03" "-a" -- "-a" "--shorta" ++ "-b" "--shortb"
+test_ "s04" "-a" "-b" ++ "-b" "--shortb"
+test_ "s04" "-a" "--shortb" ++ "-b" "--shortb"

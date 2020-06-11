@@ -14,13 +14,13 @@ autocomplete_loopback () {
 }
 
 autocomplete_argument2_arg () {
-    COMPREPLY=($(IFS=$' |'; compgen -W "2valueA | 2valueB" -- "$2"))
+    COMPREPLY=($(IFS=$'|'; compgen -W "2valueA|2valueB" -- "$2"))
 
     autocomplete_loopback
 }
 
 autocomplete_argument3_arg () {
-    COMPREPLY=($(IFS=$' |'; compgen -W "3valueA | 3valueB | 3valueC" -- "$2"))
+    COMPREPLY=($(IFS=$'|'; compgen -W "3valueA|3valueB|3valueC" -- "$2"))
 }
 
 autocomplete_argument4_arg () {
@@ -70,6 +70,24 @@ autocomplete_option () {
 	["--depend-on6"]=1
     )
 
+    declare -A short=(
+	["-a"]="--no-argument1"
+	["-b"]="--no-argument2"
+	["-c"]="--no-argument3"
+
+	["-p"]="--prerequesite1"
+	["-d"]="--depend-on1"
+    )
+
+    declare -A long2short=(
+	["--no-argument1"]="-a"
+	["--no-argument2"]="-b"
+	["--no-argument3"]="-c"
+
+	["--prerequesite1"]="-p"
+	["--depend-on1"]="-d"
+    )
+
     # Handle 'mode'
     declare -a modes=(
 	"modeA"
@@ -90,7 +108,7 @@ autocomplete_option () {
     for mode in "${modes[@]}"; do
 	for argument in "${@}"; do
 	    local -n modearray="${mode}"
-	    if [[ "${modearray[$argument]+_}" ]]; then
+	    if [[ -v "modearray[$argument]" ]]; then
 		for othermode in "${modes[@]}"; do
 		    if [[ "$othermode" != "$mode" ]]; then
 			unset $othermode
@@ -129,7 +147,7 @@ autocomplete_option () {
     for group in "${groups[@]}"; do
 	for argument in "${@}"; do
 	    local -n grouparray="${group}"
-	    if [[ "${grouparray[$argument]+_}" ]]; then
+	    if [[ -v "grouparray[$argument]" ]]; then
 		local -i multiple="${grouparray[$argument]}"
 		unset grouparray
 		declare -A grouparray=(["$argument"]="$multiple")
@@ -146,68 +164,50 @@ autocomplete_option () {
 
     # Handle 'dependon'
     declare -A dependon=(
-	["--depend-on1"]="--prerequesite1"
-	["--depend-on2"]="--prerequesite2"
-	["--depend-on3"]="--prerequesite3"
-	["--depend-on4"]="--prerequesite4"
-	["--depend-on5"]="--prerequesite5"
-	["--depend-on6"]="--depend-on5"
+	["--prerequesite1"]="--depend-on1"
+	["--prerequesite2"]="--depend-on2"
+	["--prerequesite3"]="--depend-on3"
+	["--prerequesite4"]="--depend-on4"
+	["--prerequesite5"]="--depend-on5"
+	["--depend-on5"]="--depend-on6"
     )
 
-    for dependent in "${!dependon[@]}"; do
-	local -i found=0
-
-	for argument in "${@}"; do
+    for argument in "$@"; do
+	for dependent in "${!dependon[@]}"; do
 	    if [[ "$argument" = "$dependent" ]]; then
-		found=1
-		break
+		dependon["$argument"]=""
+	    elif [[ -v "short[$argument]" ]]; then
+		if [[ "${short[$argument]}" = "$dependent" ]]; then
+		    dependon["${short[$argument]}"]=""
+		fi
 	    fi
 	done
-
-	if [[ "$found" -eq 1 ]]; then
-	    found=0
-
-	    for argument in "${@}"; do
-		if [[ "$argument" = "${dependon[$dependent]}" ]]; then
-		    found=1
-		    break
-		fi
-	    done
-
-	    if [[ "$found" -eq 0 ]]; then
-		local -i multiple="${options[${dependon[$dependent]}]}"
-		unset options
-		declare -A options=(["${dependon[$dependent]}"]="$multiple")
-		break
-	    fi
-	fi
     done
 
-    # Handle dual short-long
-    declare -A short=(
-	["-a"]="--no-argument1"
-	["-b"]="--no-argument2"
-	["-c"]="--no-argument3"
-    )
+    for unmet in "${!dependon[@]}"; do
+	if [[ -n "${dependon[$unmet]}" ]]; then
+	    unset options["${dependon[$unmet]}"]
 
-    declare -A long2short=(
-	["--no-argument1"]="-a"
-	["--no-argument2"]="-b"
-	["--no-argument3"]="-c"
-    )
+	    for option in "${!short[@]}"; do
+		if [[ "${short[$option]}" = "${dependon[$unmet]}" ]]; then
+		    unset short["$option"]
+		fi
+	    done
+	fi
+    done
 
     # Handle 'multiple'
     for argument in "$@"; do
 	local shortarg=""
 
-	if [[ "${short[$argument]+_}" ]]; then
+	if [[ -v "short[$argument]" ]]; then
 	    shortarg="$argument"
 	    argument="${short[$argument]}"
-	elif [[ "${long2short[$argument]+_}" ]]; then
+	elif [[ -v "long2short[$argument]" ]]; then
 	    shortarg="${long2short[$argument]}"
 	fi
 
-	if [[ "${options[$argument]+_}" ]]; then
+	if [[ -v "options[$argument]" ]]; then
 	    # 0 is infinite
 	    if [[ "${options[$argument]}" -eq 1 ]]; then
 		unset options["$argument"]

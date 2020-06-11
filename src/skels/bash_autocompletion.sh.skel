@@ -22,6 +22,14 @@ _@command@_autocomplete_option () {
 @options@
     )
 
+    declare -A short=(
+@shortoptions@
+    )
+
+    declare -A long2short=(
+@long2shortoptions@
+    )
+
     # Handle 'mode'
     declare -a modes=(
 @modes_names@
@@ -31,7 +39,7 @@ _@command@_autocomplete_option () {
     for argument in "$@@"; do
 	for mode in "${modes[@@]}"; do
 	    local -n modearray="${mode}"
-	    if [[ "${modearray[$argument]+_}" ]]; then
+	    if [[ -v "modearray[$argument]" ]]; then
 		for othermode in "${modes[@@]}"; do
 		    if [[ "$othermode" != "$mode" ]]; then
 			unset $othermode
@@ -59,7 +67,7 @@ _@command@_autocomplete_option () {
     for argument in "$@@"; do
 	for group in "${groups[@@]}"; do
 	    local -n grouparray="${group}"
-	    if [[ "${grouparray[$argument]+_}" ]]; then
+	    if [[ -v "grouparray[$argument]" ]]; then
 		local -i multiple="${grouparray[$argument]}"
 		unset grouparray
 		declare -A grouparray=(["$argument"]="$multiple")
@@ -79,56 +87,42 @@ _@command@_autocomplete_option () {
 	@dependon@
     )
 
-    for dependent in "${!dependon[@@]}"; do
-	local -i found=0
-
-	for argument in "$@@"; do
+    for argument in "$@@"; do
+	for dependent in "${!dependon[@@]}"; do
 	    if [[ "$argument" = "$dependent" ]]; then
-		found=1
-		break
+		dependon["$argument"]=""
+	    elif [[ -v "short[$argument]" ]]; then
+		if [[ "${short[$argument]}" = "$dependent" ]]; then
+		    dependon["${short[$argument]}"]=""
+		fi
 	    fi
 	done
-
-	if [[ "$found" -eq 1 ]]; then
-	    found=0
-
-	    for argument in "$@@"; do
-		if [[ "$argument" = "${dependon[$dependent]}" ]]; then
-		    found=1
-		    break
-		fi
-	    done
-
-	    if [[ "$found" -eq 0 ]]; then
-		local -i multiple="${options[${dependon[$dependent]}]}"
-		unset options
-		declare -A options=(["${dependon[$dependent]}"]="$multiple")
-		break
-	    fi
-	fi
     done
 
-    # Handle dual short-long
-    declare -A short=(
-@shortoptions@
-    )
+    for unmet in "${!dependon[@@]}"; do
+	if [[ -n "${dependon[$unmet]}" ]]; then
+	    unset options["${dependon[$unmet]}"]
 
-    declare -A long2short=(
-@long2shortoptions@
-    )
+	    for option in "${!short[@@]}"; do
+		if [[ "${short[$option]}" = "${dependon[$unmet]}" ]]; then
+		    unset short["$option"]
+		fi
+	    done
+	fi
+    done
 
     # Handle 'multiple'
     for argument in "$@@"; do
 	local shortarg=""
 
-	if [[ "${short[$argument]+_}" ]]; then
+	if [[ -v "short[$argument]" ]]; then
 	    shortarg="$argument"
 	    argument="${short[$argument]}"
-	elif [[ "${long2short[$argument]+_}" ]]; then
+	elif [[ -v "long2short[$argument]" ]]; then
 	    shortarg="${long2short[$argument]}"
 	fi
 
-	if [[ "${options[$argument]+_}" ]]; then
+	if [[ -v "options[$argument]" ]]; then
 	    # 0 is infinite
 	    if [[ "${options[$argument]}" -eq 1 ]]; then
 		unset options["$argument"]
@@ -141,7 +135,7 @@ _@command@_autocomplete_option () {
 	fi
     done
 
-    echo "${!options[@@]}"
+    echo "${!options[@@]}" "${!short[@@]}"
 }
 
 _@command@_autocomplete () {

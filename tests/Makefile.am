@@ -49,6 +49,10 @@ test_unamed_cmd.c: test_unamed_cmd.ggo
 test_manual_help_cmd.c: $(srcdir)/test_manual_help_cmd.ggo
 	$(GGO_COMPILE) --unnamed-opt --show-required --no-help --no-version
 
+test_bash_autocompletion.c: test_bash_autocompletion.ggo
+	$(GGO_COMPILE)
+test_bash_autocompletion.h: test_bash_autocompletion.c
+
 # INCLUDES is added to LDFLAGS because .ggo file are sources, and thus
 # the .c files are passed to the linker, which also compiles, thus
 # the include options should be passed to it as well
@@ -114,7 +118,8 @@ TESTS = \
 	test_output_dir.sh \
 	test_output_dirs.sh \
 	test_show_help.sh \
-	test_wrong_ggo.sh
+	test_wrong_ggo.sh \
+	test_bash_autocompletion.sh
 
 check_PROGRAMS = \
 	canonize-names \
@@ -321,6 +326,9 @@ test_only_flags_SOURCES = \
 test_usage_SOURCES = \
 	test_usage.c \
 	test_usage_cmd.ggo
+test_bash_autocompletion_SOURCES = \
+	test_bash_autocompletion.c \
+	test_bash_autocompletion.ggo
 
 CHECKDIFFFILES = \
 	canonize-names-cmd.c \
@@ -385,7 +393,9 @@ CHECKDIFFFILES = \
 	test_unnamed_cmd.c \
 	test_unnamed_cmd.h \
 	test_values_cmd.c \
-	test_values_cmd.h
+	test_values_cmd.h \
+	test_bash_autocompletion.c \
+	test_bash_autocompletion.h
 
 BUILT_SOURCES = $(CHECKDIFFFILES)
 
@@ -498,7 +508,8 @@ EXTRA_DIST = \
 	test_unnamed.sh.in \
 	test_values.sh.in \
 	test_values_err.sh.in \
-	valgrind_tests.sh.in
+	valgrind_tests.sh.in \
+	test_bash_autocompletion.sh.in
 
 check-valgrind:
 	./valgrind_tests.sh $(VALGRINDTESTS)
@@ -515,6 +526,9 @@ CLEANFILES = \
 	*_cmd.c \
 	*_cmd.h \
 	cmdline.c \
-	cmdline.h
+	cmdline.h \
+	test_bash_autocompletion.c \
+	test_bash_autocompletion.h \
+	test_bash_autocompletion.bash
 
 endif

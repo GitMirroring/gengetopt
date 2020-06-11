@@ -2053,12 +2053,12 @@ int CmdlineParserCreator::add_to_autocompletion_cluster(autocompletion_cluster &
       element = check.first;
     }
 
-  if (short_ != 0
-      && !element->second.insert(std::pair<std::string, unsigned int>(&short_, count)).second)
+  if (short_ != 0 && long_ == nullptr
+      && !element->second.insert(std::pair<std::string, unsigned int>(std::string("-") + short_, count)).second)
     return 1;
 
   if (long_ != nullptr
-      && !element->second.insert(std::pair<std::string, unsigned int>(long_, count)).second)
+      && !element->second.insert(std::pair<std::string, unsigned int>(std::string("--") + long_, count)).second)
     return 1;
 
   return 0;
@@ -2088,8 +2088,8 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
   const std::string command = gengetopt_package ? gengetopt_package : "<command>";
   script.set_command(command);
 
-  if(unnamed_options)
-    script.set_unnamed(command + "_unnamed");
+  if (unnamed_options)
+    script.set_unnamed(std::string("_") +  command + "_autocomplete_unnamed");
   else
     script.set_unnamed(":");
 
@@ -2105,8 +2105,8 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 
   const char * tab = "    ";
 
-  for(gengetopt_option_list::const_iterator it = gengetopt_options.begin();
-      it != gengetopt_options.end(); ++it)
+  for (gengetopt_option_list::const_iterator it = gengetopt_options.begin();
+       it != gengetopt_options.end(); ++it)
     {
       const struct gengetopt_option & option = **it;
 
@@ -2131,7 +2131,7 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	}
       else
 	{
-	  if (option.short_opt != 0)
+	  if (option.short_opt != 0 && option.long_opt == nullptr)
 	    options << tab << "[\"-" << option.short_opt << "\"]" << "=" << count << std::endl;
 
 	  if (option.long_opt != nullptr)
@@ -2141,16 +2141,20 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
       if (option.dependon != nullptr)
 	{
 	  if (option.short_opt != 0)
-	    dependon << tab << "[\"-" << option.short_opt << "\"]" << "=" << "[\"" << option.dependon << "\"]" << std::endl;
+	    {
+	      dependon << tab << "[\"--"<< option.dependon << "\"]" << "=" << "\"-" << option.short_opt << "\"" << std::endl;
+	    }
 
 	  if (option.long_opt != nullptr)
-	    dependon << tab << "[\"--" << option.long_opt << "\"]" << "=" << "[\"" << option.dependon << "\"]" << std::endl;
+	    {
+	      dependon << tab << "[\"--" << option.dependon << "\"]" << "=" << "\"--" << option.long_opt << "\"" << std::endl;
+	    }
 	}
 
       if (option.short_opt != 0 && option.long_opt != nullptr)
 	{
-	  shortoptions << "[\"-" << option.short_opt << "\"]=\"" << option.long_opt << "\"" << std::endl;
-	  long2shortoptions << "[\"--" << option.long_opt << "\"]=\"" << option.short_opt << "\"" << std::endl;
+	  shortoptions << "[\"-" << option.short_opt << "\"]=\"--" << option.long_opt << "\"" << std::endl;
+	  long2shortoptions << "[\"--" << option.long_opt << "\"]=\"-" << option.short_opt << "\"" << std::endl;
 	}
       
       if (option.type != ARG_NO && option.type != ARG_FLAG)
@@ -2166,18 +2170,19 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	    {
 	      functions << "_" << command << "_autocomplete_" << option_name << "_arg () {"
 			<< std::endl
-			<< tab << "COMPREPLY=($(IFS=$' |'; compgen -W \"";
+			<< tab << "COMPREPLY=($(IFS=$'|'; compgen -W \"";
 
 	      for(AcceptedValues::const_iterator it = option.acceptedvalues->begin(); it != option.acceptedvalues->end(); ++it)
 		{
-		  functions << *it << " | ";
+		  functions << *it << "|";
 		}
+
+	      functions << "\" -- \"$2\"))" << std::endl
+			<< std::endl;
 
 	      if (!option.arg_is_optional)
 		{
-		  functions << "\" -- \"$2\"))" << std::endl
-			    << std::endl
-			    << tab << "_" << command << "_autocomplete_loopback" << std::endl;
+		  functions << tab << "_" << command << "_autocomplete_loopback" << std::endl;
 		}
 
 	      functions << "}" << std::endl
@@ -2187,14 +2192,14 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	  std::string match = "\"";
 
 	  if (option.short_opt != 0)
-	    match += option.short_opt + "\"";
+	    match += std::string("-") + option.short_opt + "\"";
 
 	  if (option.long_opt != nullptr)
 	    {
 	      if (option.short_opt != 0)
 		match += "|\"";
 
-	      match += option.long_opt;
+	      match += std::string("--") + option.long_opt;
 	      match += "\"";
 	    }
 
@@ -2210,7 +2215,7 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 
 	      if (option.acceptedvalues != nullptr)
 		{
-		  argtype << "_" << command << "_with " << command << "_autocomplete_" << option_name << "_arg; ";
+		  argtype << "_" << command << "_autocomplete_with _" << command << "_autocomplete_" << option_name << "_arg; ";
 		}
 
 	      argtype << "return ;;" << std::endl;
@@ -2218,9 +2223,20 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	}
     }
 
+  if (unnamed_options)
+    {
+      functions << "_" << command << "_autocomplete_unnamed () {" << std::endl
+		<< tab << "compopt -o filenames" << std::endl
+		<< tab << "COMPREPLY=($(compgen -A file -- \"$2\"))" << std::endl
+		<< "}" << std::endl
+		<< std::endl;
+    }
+
   script.set_autocomplete_with(functions.str());
   script.set_options(options.str());
   script.set_dependon(dependon.str());
+  script.set_shortoptions(shortoptions.str());
+  script.set_long2shortoptions(long2shortoptions.str());
   script.set_argtype(argtype.str());
   script.set_argoptional(argoptional.str());
 

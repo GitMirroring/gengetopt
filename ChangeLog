@@ -1,3 +1,12 @@
+2020-06-11 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* configure.ac, tests/test_bash_autocompletion.ggo
+	* tests/Makefile.am, tests/test_bash_autocompletion.sh.in: add
+	tests for autocompletion.
+	* auto/completion.sh, src/gm.cc,
+	* src/skels/bash_autocompletion.sh.skel: correct various bugs.
+	* auto/test.sh: delete old manual testing utility.
+
 2020-05-29 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* auto/completion.sh, src/gm.cc,
