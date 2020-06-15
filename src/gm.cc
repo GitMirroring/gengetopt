@@ -2161,14 +2161,17 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	{
 	  std::string option_name;
 
-	  if(option.long_opt != nullptr)
+	  if (option.long_opt != nullptr)
 	    option_name = option.long_opt;
 	  else
 	    option_name = option.short_opt;
 
-	  if(option.acceptedvalues != nullptr)
+	  if (option.acceptedvalues != nullptr)
 	    {
-	      functions << "_" << command << "_autocomplete_" << option_name << "_arg () {"
+	      functions << "_" << command << "_autocomplete_" << option_name << "_";
+	      if (option.arg_is_optional)
+		functions << "opt";
+	      functions << "arg () {"
 			<< std::endl
 			<< tab << "COMPREPLY=($(IFS=$'|'; compgen -W \"";
 
@@ -2210,7 +2213,7 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	      if (option.autocompletion_function != nullptr)
 		argoptional << option.autocompletion_function;
 	      else
-		argoptional << "_" << command << "_autocomplete_" << option_name << "_arg";
+		argoptional << "_" << command << "_autocomplete_" << option_name << "_optarg";
 
 	      argoptional << " \"$1\" \"$2\" \"$3\" ;;"
 			  << std::endl;
