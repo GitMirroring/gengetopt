@@ -1,6 +1,15 @@
 #!/bin/bash
 
-source test_bash_autocompletion.bash || true
+source test_bash_autocompletion.bash
+
+completion1f () {
+    COMPREPLY=($(compgen -W "comp1_arg1 comp1_arg2" -- "$2"))
+    _test_autocomplete_loopback
+}
+
+completion2f () {
+    COMPREPLY=($(compgen -W "comp2_optarg1 comp2_optarg2" -- "$2"))
+}
 
 # Pass either '++'/'--' to check what has/hasn't been generated
 test_ () {
@@ -9,38 +18,63 @@ test_ () {
     local -a skip
     local -n current=args
 
-    for arg in "${@:1}"; do
+    for arg in "${@:2}"; do
 	if [[ "$arg" = ++ ]]; then
 	    local -n current=find
 	elif [[ "$arg" = -- ]]; then
 	    local -n current=skip
+	elif [[ "$arg" = ? ]]; then
+	    current+=("")
 	else
 	    current+=("$arg")
 	fi
     done
 
-    result=$(_test_autocomplete_option "${args[@]}" "")
+    # Try to immitate the on the fly reload completion handler feature
+    # Do not try to use 'compopt' while testing,
+    #  bash prevents this command from being called outside of a completion function
+    func=_test_autocomplete
+    while : ; do
+	previous=""
+	completing=""
+	if [[ "${#args[@]}" -ge 1 ]]; then completing="${args[-1]}"; fi
+	if [[ "${#args[@]}" -ge 2 ]]; then previous="${args[-2]}"; fi
 
-    for res in $(echo $result | tr " " "\n"); do
-	for s in "${skip[@]}"; do
-	    if [[ "$res" = "$s" ]]; then
-		echo "Test #$1: '$s' found! ($result)"
+	COMP_WORDS=("test" "${args[@]}")
+	COMPREPLY=()
+
+	$func "test" "$completing" "$previous"
+
+	if [[ $? -ne 124 ]]; then break; fi
+
+	func=($(complete -p test))
+	if [[ "${#func[@]}" -lt 2 ]]; then
+	    exit 2
+	fi
+	echo "$1: new completion function '${func[2]}'"
+	func="${func[2]}"
+    done
+
+    for comp in "${COMPREPLY[@]}"; do
+	for option in "${skip[@]}"; do
+	    if [[ "$comp" = "$option" ]]; then
+		echo "Test #$1: '$s' found! (${COMPREPLY[@]})"
 		exit 1
 	    fi
 	done
     done
 
-    for f in "${find[@]}"; do
+    for option in "${find[@]}"; do
 	local -i found=0
-	for res in $(echo $result | tr " " "\n"); do
-	    if [[ "$res" = "$f" ]]; then
+	for comp in "${COMPREPLY[@]}"; do
+	    if [[ "$comp" = "$option" ]]; then
 		found=1
 		break
 	    fi
 	done
 
 	if [[ "$found" -eq 0 ]]; then
-	    echo "Test #$1: '$f' not found! ($result)"
+	    echo "Test #$1: '$option' not found! (${COMPREPLY[@]})"
 	    exit 1
 	fi
     done
@@ -56,29 +90,36 @@ test_ "n05" "--no-argument3" "--no-argument3" ++ "--no-argument3"
 test_ "n06" "--no-argument3" "--no-argument3" "--no-argument3" -- "--no-argument3"
 test_ "n07" "--no-argument4" "--no-argument4" "--no-argument4" "--no-argument4" ++ "--no-argument4"
 
-test_ "a01" "--argument1"
 test_ "a02" "--argument1" "anyvalue" -- "--argument1"
+test_ "a12" "--argument2" ? ++ "2valueA" "2valueB"
+test_ "a13" "--argument2" "2val" ++ "2valueA" "2valueB"
 test_ "a03" "--argument2" "2valueA" -- "--argument2"
-test_ "a04" "--no-argument3" "--argument3" "3valueC" -- "--argument3"
-test_ "a05" "--argument4"
-test_ "a06" "--argument4" "avalue" ++ "--argument4"
-test_ "a07" "--argument4" "avalue" "--argument4"
-test_ "a08" "--argument4" "avalue" "--argument4" "anothervalue" ++ "--argument4"
-test_ "a09" "--argument5" "5valueA" ++ "--argument5"
+test_ "a04" "--no-argument2" "--argument3" ? ++ "3valueA" "3valueB" "3valueC"
+test_ "a14" "--no-argument2" "--argument3" "3valueC" -- "--argument3"
+test_ "a06" "--argument4" "avalue" -- "--argument4"
+test_ "a10" "--argument4" "avalue" ? ++ "--argument4"
+test_ "a08" "--argument4" "avalue" "--argument4" "anothervalue" ? ++ "--argument4"
+test_ "a09" "--argument5" ? ++ "--argument5" ++ "5valueA" "5valueB"
+test_ "a11" "--argument5" "5valueA" ? ++ "--argument5"
+test_ "a15" "--argument5" "5valueA" "--argument5" ? ++ "5valueA" "5valueB"
+test_ "a16" "--argument5" "5valueA" "--argument5" ? -- "--argument5"
 
-test_ "mA1" "--modeA1" ++ "--modeA3" -- "--modeA2" -- "--modeB1" "--modeB2" "--modeB3"
-test_ "mA2" "--modeA1" "--groupA3" ++ "--modeA2" "--modeA3" -- "--modeB1" "--modeB2" "--modeB3"
+test_ "mA1" "--modeA1" ? ++ "--modeA3" -- "--modeA2" -- "--modeB1" "--modeB2" "--modeB3"
+test_ "mA2" "--modeA1" "--groupA3" ? ++ "--modeA2" "--modeA3" -- "--modeB1" "--modeB2" "--modeB3"
 test_ "mA3" "--modeA1" "--modeA3" -- "--modeB1" "--modeB2" "--modeB3"
 
-test_ "gA1" "--groupA1" -- "--groupA2" "--groupA3" ++ "--groupB1" "--groupB2"
-test_ "gA2" "--modeA1" "--groupA2" -- "--groupA1" "--groupA3" ++ "--groupB1"
-test_ "gA3" "--groupA3" ++ "--groupA3" ++ "--groupB1"
+test_ "gA1" "--groupA1" ? -- "--groupA2" "--groupA3" ++ "--groupB1" "--groupB2"
+test_ "gA2" "--modeA1" "--groupA2" ? -- "--groupA1" "--groupA3" ++ "--groupB1"
+test_ "gA3" "--groupA3" ? ++ "--groupA3" ++ "--groupB1"
 test_ "gA4" "--groupA3" "--groupA3" ++ "--groupA3"
 
 test_ "gB1" "--groupA1" "--groupB2" -- "--groupA2" "--groupA3" -- "--groupB1" "--groupB2"
 
 test_ "s01" ++ "-a" -- "-b" "--shortb"
-test_ "s02" "--shorta" -- "-a" "--shorta" ++ "-b" "--shortb"
-test_ "s03" "-a" -- "-a" "--shorta" ++ "-b" "--shortb"
-test_ "s04" "-a" "-b" ++ "-b" "--shortb"
-test_ "s04" "-a" "--shortb" ++ "-b" "--shortb"
+test_ "s02" "--shorta" ? -- "-a" "--shorta" ++ "-b" "--shortb"
+test_ "s03" "-a" ? -- "-a" "--shorta" ++ "-b" "--shortb"
+test_ "s04" "-a" "-b" ? ++ "-b" "--shortb"
+test_ "s05" "-a" "--shortb" ? ++ "-b" "--shortb"
+
+test_ "c01" "--completion1" ? ++ "comp1_arg1" "comp1_arg2"
+test_ "c02" "--completion2" ? ++ "comp2_optarg1" "comp2_optarg2" ++ "--completion1"

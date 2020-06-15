@@ -43,6 +43,7 @@ struct gengetopt_option
   bool hidden; /**< whether this option will be hidden from the help output */
   char *type_str; /**< Alternative name for type,
                      e.g. "URL" or "SECONDS" */
+  char *autocompletion_function;
   const AcceptedValues *acceptedvalues; /**< values that can be passed to this option */
   char *section; /**< the section of this option */
   char *section_desc; /**< the description associated with the possible section */

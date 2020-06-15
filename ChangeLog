@@ -1,3 +1,11 @@
+2020-06-15 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/ggos.h, src/gm.cc, src/parser.yy, src/scanner.ll:
+	* tests/test_bash_autocompletion.ggo,
+	* tests/test_bash_autocompletion.sh.in: add the 'autocompletion'
+	keyword to ggo grammar to specify a custom autocompletion function
+	for arguments. Mimic Bash's 124 return code to test this feature.
+
 2020-06-11 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* configure.ac, tests/test_bash_autocompletion.ggo

@@ -112,6 +112,7 @@ tabs [\t]+
 <INITIAL>text    	updateTokenInfo (-1); return TOK_TEXT;
 <INITIAL>versiontext	updateTokenInfo (-1); return TOK_VERSIONTEXT;
 <INITIAL>args    	updateTokenInfo (-1); return TOK_ARGS;
+<INITIAL>autocompletion updateTokenInfo (-1); return TOK_AUTOCOMPLETION;
 
 <INITIAL>"=" { updateTokenInfo (-1); return '='; }
 <INITIAL>"," { updateTokenInfo (-1); return ','; }

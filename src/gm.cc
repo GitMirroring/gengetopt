@@ -2205,20 +2205,34 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 
 	  if (option.arg_is_optional)
 	    {
-	      argoptional << tab << match << ") "
-			  << "_" << command << "_autocomplete_" << option_name << "_arg \"$1\" \"$2\" \"$3\" ;;"
+	      argoptional << tab << match << ") ";
+
+	      if (option.autocompletion_function != nullptr)
+		argoptional << option.autocompletion_function;
+	      else
+		argoptional << "_" << command << "_autocomplete_" << option_name << "_arg";
+
+	      argoptional << " \"$1\" \"$2\" \"$3\" ;;"
 			  << std::endl;
 	    }
 	  else
 	    {
 	      argtype << tab << match << ") ";
 
-	      if (option.acceptedvalues != nullptr)
+	      if (option.autocompletion_function != nullptr
+		  || option.acceptedvalues != nullptr)
 		{
-		  argtype << "_" << command << "_autocomplete_with _" << command << "_autocomplete_" << option_name << "_arg; ";
+		  argtype << "_" << command << "_autocomplete_with ";
+
+		  if (option.autocompletion_function != nullptr)
+		    argtype << option.autocompletion_function;
+		  else if (option.acceptedvalues != nullptr)
+		    argtype << "_" << command << "_autocomplete_" << option_name << "_arg";
+
+		  argtype << ";";
 		}
 
-	      argtype << "return ;;" << std::endl;
+	      argtype << " return ;;" << std::endl;
 	    }
 	}
     }
