@@ -19,8 +19,7 @@ _@command@_autocomplete_dirname_optarg () {
 }
 
 _@command@_autocomplete_dirname_arg () {
-    cur="$2"
-    _filedir -d
+    _@command@_autocomplete_dirname_optarg "$1" "$2" "$3"
     _@command@_autocomplete_loopback
 }
 
@@ -30,8 +29,7 @@ _@command@_autocomplete_filename_optarg () {
 }
 
 _@command@_autocomplete_filename_arg () {
-    cur="$2"
-    _filedir
+    _@command@_autocomplete_filename_optarg "$1" "$2" "$3"
     _@command@_autocomplete_loopback
 }
 
