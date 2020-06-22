@@ -6,7 +6,7 @@ autocomplete_with () {
 }
 
 autocomplete_loopback () {
-    if [[ "${#COMPREPLY[@]}" -eq 1 ]]; then
+    if [[ "${#COMPREPLY[@]}" -le 1 ]]; then
 	autocomplete_with autocomplete
     fi
 
@@ -19,28 +19,34 @@ autocomplete_argument2_arg () {
     autocomplete_loopback
 }
 
-autocomplete_argument3_arg () {
+autocomplete_argument3_optarg () {
     COMPREPLY=($(IFS=$'|'; compgen -W "3valueA|3valueB|3valueC" -- "$2"))
 }
 
-autocomplete_argument4_arg () {
-    COMPREPLY=($(compgen -o dirnames -A directory -- "$2"))
+autocomplete_dirname_optarg () {
+    cur="$2"
+    _filedir -d
+}
 
-    if [[ "${#COMPREPLY[@]}" -eq 1 ]]; then
-	local dir="${COMPREPLY[0]}"
-	COMPREPLY=($(compgen -o dirnames -A directory -- "$dir/"))
+autocomplete_dirname_arg () {
+    cur="$2"
+    _filedir -d
+    autocomplete_loopback
+}
 
-	if [[ "${#COMPREPLY[@]}" -le 1 ]]; then
-	    COMPREPLY=("$dir")
-	fi
-    fi
+autocomplete_filename_optarg () {
+    cur="$2"
+    _filedir
+}
 
+autocomplete_filename_arg () {
+    cur="$2"
+    _filedir
     autocomplete_loopback
 }
 
 autocomplete_unnamed () {
-    compopt -o filenames
-    COMPREPLY=($(compgen -A file -- "$2"))
+    autocomplete_filename_optarg "$1" "$2" "$3"
 }
 
 autocomplete_option () {
@@ -50,7 +56,10 @@ autocomplete_option () {
 	["--argument1"]=1
 	["--argument2"]=1
 	["--argument3"]=1
-	["--argument4"]=0
+	["--dir1"]=0
+	["--dir2"]=0
+	["--file1"]=0
+	["--file2"]=0
 	["--no-argument1"]=0
 	["--no-argument2"]=1
 	["--no-argument3"]=2
@@ -229,12 +238,15 @@ autocomplete () {
     case "$3" in
 	"--argument1") return ;;
 	"--argument2") autocomplete_with autocomplete_argument2_arg; return ;;
-	"--argument4") autocomplete_with autocomplete_argument4_arg; return ;;
+	"--dir1") autocomplete_with autocomplete_dirname_arg; return ;;
+	"--file1") autocomplete_with autocomplete_filename_arg; return ;;
     esac
 
     # Handle 'argoptional' and 'unnamed'
     case "$3" in
-	"--argument3") autocomplete_argument3_arg "$1" "$2" "$3" ;;
+	"--argument3") autocomplete_argument3_optarg "$1" "$2" "$3" ;;
+	"--dir2") autocomplete_dirname_optarg "$1" "$2" "$3" ;;
+	"--file2") autocomplete_filename_optarg "$1" "$2" "$3" ;;
 	*) autocomplete_unnamed "$1" "$2" "$3" ;;
     esac
 

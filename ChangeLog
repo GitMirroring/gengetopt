@@ -1,3 +1,8 @@
+2020-06-22 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* auto/completion.sh: use Bash builtin fonctions for files
+	and directories autocompletion.
+
 2020-06-15 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/ggos.h, src/gm.cc, src/parser.yy, src/scanner.ll:
