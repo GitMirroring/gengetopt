@@ -34,3 +34,9 @@ option "shortb" b "" multiple dependon="shorta"
 
 option "completion1" - "" string autocompletion="completion1f"
 option "completion2" - "" string argoptional autocompletion="completion2f"
+
+option "file1" - "" filename
+option "file2" - "" filename argoptional
+
+option "dir1" - "" directory
+option "dir2" - "" directory argoptional

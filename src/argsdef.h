@@ -32,6 +32,8 @@
 #define ARG_LONGDOUBLE	8
 #define ARG_LONGLONG	9
 #define ARG_ENUM    10
+#define ARG_FILE    100
+#define ARG_DIR     101
 
 /** corresponding strings for above defines */
 extern const char * arg_type_constants [];

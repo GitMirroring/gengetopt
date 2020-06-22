@@ -59,6 +59,8 @@ struct gengetopt_option
   char *filename; /**< source file */
   int linenum; /**< line number */
 
+  int orig_type;
+
   gengetopt_option();
 };
 

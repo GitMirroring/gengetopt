@@ -40,6 +40,12 @@ main (int argc, char **argv)
   if (args_info.hidden_given)
     printf ("specified --hidden: %d\n", args_info.hidden_arg);
 
+  if (args_info.filename_given)
+    printf ("filename: %s\n", args_info.filename_arg);
+
+  if (args_info.directory_given)
+    printf ("directory: %s\n", args_info.directory_arg);
+
   if (args_info.file_save_given && test_all_opts_cmd_parser_file_save (args_info.file_save_arg, &args_info) != EXIT_SUCCESS)
     exit(1) ;
 

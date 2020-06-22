@@ -316,7 +316,11 @@ void CmdlineParserCreator::set_has_arg_types() {
         case ARG_FLAG:
             set_has_arg_flag(true);
             break;
-        case ARG_STRING:
+	case ARG_FILE:
+	case ARG_DIR:
+	    opt->orig_type = opt->type;
+	    opt->type = ARG_STRING;
+	case ARG_STRING:
             set_has_arg_string(true);
             break;
         case ARG_INT:
@@ -2213,7 +2217,18 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	      if (option.autocompletion_function != nullptr)
 		argoptional << option.autocompletion_function;
 	      else
-		argoptional << "_" << command << "_autocomplete_" << option_name << "_optarg";
+		{
+		  argoptional << "_" << command << "_autocomplete_";
+
+		  if (option.orig_type == ARG_FILE)
+		    argoptional << "filename";
+		  else if (option.orig_type == ARG_DIR)
+		    argoptional << "dirname";
+		  else
+		    argoptional << option_name;
+
+		  argoptional << "_optarg";
+		}
 
 	      argoptional << " \"$1\" \"$2\" \"$3\" ;;"
 			  << std::endl;
@@ -2223,12 +2238,18 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	      argtype << tab << match << ") ";
 
 	      if (option.autocompletion_function != nullptr
+		  || option.orig_type == ARG_FILE
+		  || option.orig_type == ARG_DIR
 		  || option.acceptedvalues != nullptr)
 		{
 		  argtype << "_" << command << "_autocomplete_with ";
 
 		  if (option.autocompletion_function != nullptr)
 		    argtype << option.autocompletion_function;
+		  else if (option.orig_type == ARG_FILE)
+		    argtype << "_" << command << "_autocomplete_filename_arg";
+		  else if (option.orig_type == ARG_DIR)
+		    argtype << "_" << command << "_autocomplete_dirname_arg";
 		  else if (option.acceptedvalues != nullptr)
 		    argtype << "_" << command << "_autocomplete_" << option_name << "_arg";
 
@@ -2238,15 +2259,6 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 	      argtype << " return ;;" << std::endl;
 	    }
 	}
-    }
-
-  if (unnamed_options)
-    {
-      functions << "_" << command << "_autocomplete_unnamed () {" << std::endl
-		<< tab << "compopt -o filenames" << std::endl
-		<< tab << "COMPREPLY=($(compgen -A file -- \"$2\"))" << std::endl
-		<< "}" << std::endl
-		<< std::endl;
     }
 
   script.set_autocomplete_with(functions.str());

@@ -7,3 +7,5 @@ set -ex
 "$@" ./test_all_opts -r "foo" --opt-arg -o
 "$@" ./test_all_opts -r "foo" --opt-arg="bar" -o"foobar"
 "$@" ./test_all_opts -r "foo" -H10
+"$@" ./test_all_opts -r "foo" --filename=/home/user/.bashrc
+"$@" ./test_all_opts -r "foo" --directory=/home

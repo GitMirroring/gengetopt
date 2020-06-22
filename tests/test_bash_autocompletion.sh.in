@@ -12,6 +12,7 @@ completion2f () {
 }
 
 # Pass either '++'/'--' to check what has/hasn't been generated
+# Pass '?' to terminate previous input and complete the empty word
 test_ () {
     local -a args
     local -a find
@@ -57,7 +58,7 @@ test_ () {
 
     for comp in "${COMPREPLY[@]}"; do
 	for option in "${skip[@]}"; do
-	    if [[ "$comp" = "$option" ]]; then
+	    if [[ "$comp" = $option ]]; then
 		echo "Test #$1: '$s' found! (${COMPREPLY[@]})"
 		exit 1
 	    fi
@@ -67,7 +68,7 @@ test_ () {
     for option in "${find[@]}"; do
 	local -i found=0
 	for comp in "${COMPREPLY[@]}"; do
-	    if [[ "$comp" = "$option" ]]; then
+	    if [[ "$comp" = $option ]]; then
 		found=1
 		break
 	    fi
@@ -80,7 +81,7 @@ test_ () {
     done
 }
 
-test_ "dep" -- "--argument3" "--modeA-2" "--groupA-2" "--groupB-2"
+test_ "dep" ++ "--*" -- "--argument3" "--modeA-2" "--groupA-2" "--groupB-2"
 
 test_ "n01" "--no-argument1" -- "--no-argument1"
 test_ "n02" "--no-argument2" ++ "--no-argument2"
@@ -123,3 +124,33 @@ test_ "s05" "-a" "--shortb" ? ++ "-b" "--shortb"
 
 test_ "c01" "--completion1" ? ++ "comp1_arg1" "comp1_arg2"
 test_ "c02" "--completion2" ? ++ "comp2_optarg1" "comp2_optarg2" ++ "--completion1"
+
+if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+
+source /usr/share/bash-completion/bash_completion
+
+else
+    _test_autocomplete_filename_optarg () {
+	COMPREPLY=($(compgen -W "test_bash_autocompletion.sh --no-argument1" -- "$2"))
+    }
+
+    _test_autocomplete_filename_arg () {
+	COMPREPLY=($(compgen -W "test_bash_autocompletion.sh" -- "$2"))
+	_test_autocomplete_loopback
+    }
+
+    _test_autocomplete_dirname_optarg () {
+	COMPREPLY=($(compgen -W "output_dirs --no-argument1" -- "$2"))
+    }
+
+    _test_autocomplete_dirname_arg () {
+	COMPREPLY=($(compgen -W "output_dirs" -- "$2"))
+	_test_autocomplete_loopback
+    }
+fi
+
+test_ "f01" "--file1" ? ++ "test_bash_autocompletion.sh" -- "--*"
+test_ "f02" "--file2" ? ++ "test_bash_autocompletion.sh"
+
+test_ "f03" "--dir1" ? ++ "output_dirs" -- "--*"
+test_ "f04" "--dir2" ? ++ "output_dirs"

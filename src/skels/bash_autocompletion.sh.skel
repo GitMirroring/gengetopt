@@ -6,11 +6,37 @@ _@command@_autocomplete_with () {
 }
 
 _@command@_autocomplete_loopback () {
-    if [[ "${#COMPREPLY[@@]}" -eq 1 ]]; then
+    if [[ "${#COMPREPLY[@@]}" -le 1 ]]; then
 	_@command@_autocomplete_with _@command@_autocomplete
     fi
 
     return 0
+}
+
+_@command@_autocomplete_dirname_optarg () {
+    cur="$2"
+    _filedir -d
+}
+
+_@command@_autocomplete_dirname_arg () {
+    cur="$2"
+    _filedir -d
+    _@command@_autocomplete_loopback
+}
+
+_@command@_autocomplete_filename_optarg () {
+    cur="$2"
+    _filedir
+}
+
+_@command@_autocomplete_filename_arg () {
+    cur="$2"
+    _filedir
+    _@command@_autocomplete_loopback
+}
+
+_@command@_autocomplete_unnamed () {
+    _@command@_autocomplete_filename_optarg "$1" "$2" "$3"
 }
 
 @autocomplete_with@
