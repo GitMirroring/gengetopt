@@ -1,6 +1,6 @@
 2020-06-22 Grégoire Scano <gregoire.scano@malloc.fr>
 
-	* auto/completion.sh,
+	* auto/completion.sh, auto/script.sh: delete devel files;
 	* src/skels/bash_autocompletion.sh.skel: use Bash builtin
 	fonctions for files and directories autocompletion.
 	* src/argsdef.h, src/ggos.h, src/gm.cc, src/scanner.ll,
