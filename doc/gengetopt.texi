@@ -103,6 +103,8 @@ This file documents GNU Gengetopt version @value{VERSION}.
 	Customizing invocation of the generated parser
 * Configuration files::
 	Parsing a configuration file
+* Autocompletion::
+        Generate autocompletion script
 * Multiple Options::
 	Multiple options
 * String Parsers and Multiple Parsers::
@@ -334,6 +336,7 @@ option <long> <short> "<desc>"
 	@{default="<default value>"@}
 	@{dependon="<other option>"@}
 	@{required@} @{argoptional@} @{multiple@}
+        @{autocompletion="<function>"@}
 	@{hidden@}
 
 option <long> <short> "<desc>" flag <on/off>
@@ -449,9 +452,14 @@ Note that if @code{--strict-hidden} is used, options that are hidden
 @item argtype
 
 @code{string}, @code{int}, @code{short}, @code{long}, @code{float},
-@code{double}, @code{longdouble} or @code{longlong}. If the option is an
-enumerated one (see @ref{Options with enumerated values}) the type can also be
-@code{enum}. If no type is specified the option does not accept an argument.
+@code{double}, @code{longdouble}, @code{longlong}, @code{filename}, or
+@code{directory}. If the option is an enumerated one (see
+@ref{Options with enumerated values}) the type can also be @code{enum}.
+If no type is specified the option does not accept an argument.
+@code{filename} and @code{directory} behave exactly as @code{string}
+except that they will be used to generate specific autocompletion
+functions if @code{--autocompletion=<shell>} is supplied
+(see @ref{Autocompletion}).
 
 @cindex typestr
 @item typestr
@@ -522,6 +530,13 @@ command line; all the values for this option are stored in an array. You can
 also specify the number of occurrences that a multiple option must be specified.
 Notice that this is independent from the @code{required} flag. See @ref{Multiple
 Options}.
+
+@cindex autocompletion
+@item autocompletion="<function>"
+
+If an option has an argument, either optional or mandatory, and the @code{--autocompletion}
+option is supplied, the @code{function} is used to autocomplete the arguments, overriding
+the default autocompletion function. See @ref{Autocompletion}.
 
 @cindex hidden
 @cindex details
@@ -1708,7 +1723,7 @@ applications. If your application uses configuration files with lines that are
 longer, you can compile the generated C file by specifying an explicit value for
 this constant with the @code{-D} command line option of @code{gcc}.
 
-@node Multiple Options, String Parsers and Multiple Parsers, Configuration files, Top
+@node Multiple Options, Autocompletion, Configuration files, Top
 @chapter Multiple Options
 @cindex multiple options
 
@@ -1808,7 +1823,61 @@ option "string"      s "string option" string optional multiple(-5)
 
 Notice that this is independent from the @code{required} flag.
 
-@node String Parsers and Multiple Parsers, No getopt_long, Multiple Options, Top
+@node Autocompletion, String Parsers and Multiple Parsers, Multiple Options, Top
+@chapter Autocompletion
+@cindex autocompletion
+
+Autocompletion files can be generated with the @code{--autocompletion} option and
+is, for the moment, limited to Bash (@code{--autocompletion=bash}).
+
+The output is sent to a file named according to the @code{--file-name="<cmdline>"}
+option and suffixed by the shell name (@code{cmdline.bash} in this default case).
+The executable targeted by the autocompletion function is given by the @code{package}
+entry of the configuration file.
+
+Despite generating autocompletion for option names, the script attempts to
+provide autocompletion for options accepting values based either on the
+@code{values} field or the @code{filename} and @code{directory} attributes.
+
+It is also possible to provide a custom completion function for options
+accepting values to either modify the default generated behavior or provide
+a completion mechanism for options accepting values which cannot be described
+in the configuration file. The attribute @code{autocompletion="<function>"}
+defines such autocompletion @code{function}.
+
+Note that for an option without a list of possible values and not specifying
+@code{argoptional}, no autocompletion will be attempted until a value has been
+supplied, after which autocompletion will resume with all remaining options.
+Also, the completion for @code{--unnamed} arguments defaults to @code{filename}
+and cannot be changed unless the function @code{_<package>_autocomplete_unnamed}
+is overridden.
+
+@section Bash
+
+Extending @code{argoptional} options is straight forward as the name of the
+function referred to by @code{autocompletion} will be called with the 3
+arguments @code{$1}, @code{$2}, and @code{$3} as described in the
+@uref{https://www.gnu.org/software/bash/manual/html_node
+/Programmable-Completion.html#Programmable-Completion,
+GNU Bash programmable completion documentation}. After having called this
+custom completion function the possible completions it yielded are extended
+with option names.
+
+For mandatory options, the autocompletion script uses the reentrant capacity
+of Bash by returning code @code{124}, causing the supplied function
+to be used as the new compspec for the program. Such
+completion functions must call the @code{_<package>_autocomplete_loopback}
+function before returning in order to reset the compspec to the general
+function @code{_<package>_autocomplete} once the value completion is terminated
+(i.e. there at most one possible completion left).
+
+For options with a @code{filename} or @code{directory} @code{argtype},
+Bash's @code{_filedir} builtin function is used. In the event that this
+function is not available, it would be necessary to reimplement and source it,
+or provide an implementation for functions
+@code{_<package>_autocomplete_@{filename,dirname@}_opt@{arg@}}.
+
+@node String Parsers and Multiple Parsers, No getopt_long, Autocompletion, Top
 @chapter String Parsers and Multiple Parsers
 @cindex multiple parsers
 @cindex string parsers

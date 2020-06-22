@@ -9,6 +9,7 @@
 	* tests/test_bash_autocompletion.ggo,
 	* tests/test_bash_autocompletion.sh.in: add 'filename' and
 	'directory' argtypes for default autocompletion functions.
+	* doc/gengetopt.texi: update documentation.
 
 2020-06-15 Grégoire Scano <gregoire.scano@malloc.fr>
 
