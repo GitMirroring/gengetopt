@@ -9,6 +9,7 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 skels = \
+	bash_autocompletion.sh.h \
 	c_source.h_skel \
 	check_modes.h_skel \
 	clear_arg.h_skel \

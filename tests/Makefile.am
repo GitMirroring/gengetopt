@@ -509,7 +509,8 @@ EXTRA_DIST = \
 	test_values.sh.in \
 	test_values_err.sh.in \
 	valgrind_tests.sh.in \
-	test_bash_autocompletion.sh.in
+	test_bash_autocompletion.sh.in \
+	test_bash_autocompletion.ggo
 
 check-valgrind:
 	./valgrind_tests.sh $(VALGRINDTESTS)
