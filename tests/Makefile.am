@@ -326,9 +326,6 @@ test_only_flags_SOURCES = \
 test_usage_SOURCES = \
 	test_usage.c \
 	test_usage_cmd.ggo
-test_bash_autocompletion_SOURCES = \
-	test_bash_autocompletion.c \
-	test_bash_autocompletion.ggo
 
 CHECKDIFFFILES = \
 	canonize-names-cmd.c \

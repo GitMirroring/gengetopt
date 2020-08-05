@@ -53,8 +53,8 @@ c_gens = $(skels:.h_skel=.cc)
 		$(MAKE) $(AM_MAKEFLAGS) $<; \
 	fi
 
-%.sh.h: %.sh.cc
-%.sh.cc: %.sh.skel
+bash_autocompletion.sh.h: bash_autocompletion.sh.cc
+bash_autocompletion.sh.cc: bash_autocompletion.sh.skel
 	$(GENGEN) -i $< -F $(@:.cc=.h) -f $(@:.sh.cc=) \
 		--separate-files --expand-tabs --force
 
