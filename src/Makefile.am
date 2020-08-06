@@ -103,3 +103,12 @@ noinst_HEADERS = \
 	fileutils.h \
 	gm_utils.h \
 	yyerror.h
+
+NEW_GENGETOPT = $(top_builddir)/src/gengetopt$(EXEEXT)
+install-data-hook: $(prefix)/share/gengetopt/bash-completion.sh
+
+$(prefix)/share/gengetopt/bash-completion.sh: $(top_builddir)/src/cmdline.bash
+	cp $< $@
+
+$(top_builddir)/src/cmdline.bash: $(top_builddir)/src/cmdline.ggo
+	$(NEW_GENGETOPT) --input $< --autocomplete=bash --set-package=gengetopt
