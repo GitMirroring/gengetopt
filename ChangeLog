@@ -21,6 +21,14 @@
 
 	* src/skels/c_source.h_skel: include <unistd.h> along <getopt.h>.
 
+2020-11-18 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/cmdline.ggo, src/gengetopt.cc, src/global_opts.h,
+	* src/skels/handle_help.h_skel, src/skels/handle_version.h_skel:
+	Reorder the display of --help and --version for --help option
+	and rephrase their description.
+	* Changed: the output of the generated --help is modified.
+
 2019-05-30  Tomas Volf <wolf@wolfsden.cz>
 
 	* --unamed command line option renamed to --unnamed, old still
