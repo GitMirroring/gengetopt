@@ -1,5 +1,5 @@
 @IF@ short_opt @THEN@
-case 'V':	/* Print version and exit.  */
+case 'V':	/* Output version and exit.  */
 @ELSE@
 if (strcmp (long_options[option_index].name, "version") == 0) {
 @ENDIF@

@@ -58,7 +58,7 @@ purpose "This program generates a C function that uses getopt_long function
 to parse the command line options, validate them and fill a struct."
 
 # options that will be added to command line options of gengetopt
-args "--no-handle-version --no-handle-help --no-handle-error --string-parser"
+args "--no-handle-version --no-handle-help --no-handle-error --string-parser --no-help --no-version"
 
 # Options
 
@@ -84,6 +84,11 @@ sample1 -iINT|--int-opt=INT [-h|--help]\n"
 option  "default-optional"     - "by default, an option is considered optional if not specified otherwise" optional
 option  "unnamed-opts"   u "accept options without names (e.g., file names)" string default="FILE" optional argoptional
 option  "unamed-opts" - "synonym for --unnamed-opts, accepted for backwards compatibility" string default="FILE" optional argoptional hidden
+
+option "help" h "display help and exit" optional
+option "full-help" - "display help, including hidden options, and exit" optional
+option "detailed-help" - "display help, including all details and hidden options, and exit" optional
+option "version" V "output version and exit" optional
 
 text "\nThe parser generated is thought to be used to parse the command line arguments. "
 text "However, you can also generate parsers for configuration files, or strings "

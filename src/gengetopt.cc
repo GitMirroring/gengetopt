@@ -196,12 +196,12 @@ main (int argc, char **argv)
     free(current_section);
   current_section = 0;
 
-  has_version = gengetopt_has_option (VERSION_LONG_OPT, VERSION_SHORT_OPT);
+  has_help = gengetopt_has_option(HELP_LONG_OPT, HELP_SHORT_OPT);
 
-  if (has_version != REQ_LONG_OPTION && !args_info.no_version_given) {
-    gengetopt_create_option (opt, VERSION_LONG_OPT, has_version ? '-' : VERSION_SHORT_OPT,
-                                 VERSION_OPT_DESCR, ARG_NO, 0, 0, 0, 0, 0, 0, 0);
-    gengetopt_options.push_front(opt);
+  if (has_help != REQ_LONG_OPTION && !args_info.no_help_given) {
+    gengetopt_create_option (opt, HELP_LONG_OPT, has_help ? '-' : HELP_SHORT_OPT,
+                                 HELP_OPT_DESCR, ARG_NO, 0, 0, 0, 0, 0, 0, 0);
+    gengetopt_options.push_back(opt);
   }
 
   if (!args_info.no_help_given && !args_info.strict_hidden_given &&
@@ -209,7 +209,7 @@ main (int argc, char **argv)
   {
       gengetopt_create_option (opt, FULL_HELP_LONG_OPT, '-',
                                FULL_HELP_OPT_DESCR, ARG_NO, 0, 0, 0, 0, 0, 0, 0);
-      gengetopt_options.push_front(opt);
+      gengetopt_options.push_back(opt);
   }
 
   if (!args_info.no_help_given && has_options_with_details(args_info.strict_hidden_given) && 
@@ -217,15 +217,15 @@ main (int argc, char **argv)
   {
       gengetopt_create_option (opt, DETAILED_HELP_LONG_OPT, '-',
                                DETAILED_HELP_OPT_DESCR, ARG_NO, 0, 0, 0, 0, 0, 0, 0);
-      gengetopt_options.push_front(opt);
+      gengetopt_options.push_back(opt);
   }
 
-  has_help = gengetopt_has_option(HELP_LONG_OPT, HELP_SHORT_OPT);
+  has_version = gengetopt_has_option (VERSION_LONG_OPT, VERSION_SHORT_OPT);
 
-  if (has_help != REQ_LONG_OPTION && !args_info.no_help_given) {
-    gengetopt_create_option (opt, HELP_LONG_OPT, has_help ? '-' : HELP_SHORT_OPT,
-                                 HELP_OPT_DESCR, ARG_NO, 0, 0, 0, 0, 0, 0, 0);
-    gengetopt_options.push_front(opt);
+  if (has_version != REQ_LONG_OPTION && !args_info.no_version_given) {
+    gengetopt_create_option (opt, VERSION_LONG_OPT, has_version ? '-' : VERSION_SHORT_OPT,
+                                 VERSION_OPT_DESCR, ARG_NO, 0, 0, 0, 0, 0, 0, 0);
+    gengetopt_options.push_back(opt);
   }
 
   // check whether there's pending text after all options and

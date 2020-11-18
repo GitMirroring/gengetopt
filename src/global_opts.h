@@ -24,19 +24,19 @@
 #define HELP_LONG_OPT "help"
 #define HELP_SHORT_OPT 'h'
 #define HELP_SHORT_OPT_STR "h"
-#define HELP_OPT_DESCR "Print help and exit"
+#define HELP_OPT_DESCR "display help and exit"
 
 #define FULL_HELP_LONG_OPT "full-help"
 #define FULL_HELP_LONG_OPT_FIELD "full_help"
-#define FULL_HELP_OPT_DESCR "Print help, including hidden options, and exit"
+#define FULL_HELP_OPT_DESCR "display help, including hidden options, and exit"
 
 #define DETAILED_HELP_LONG_OPT "detailed-help"
 #define DETAILED_HELP_LONG_OPT_FIELD "detailed_help"
-#define DETAILED_HELP_OPT_DESCR "Print help, including all details and hidden options, and exit"
+#define DETAILED_HELP_OPT_DESCR "display help, including all details and hidden options, and exit"
 
 #define VERSION_LONG_OPT "version"
 #define VERSION_SHORT_OPT 'V'
 #define VERSION_SHORT_OPT_STR "V"
-#define VERSION_OPT_DESCR "Print version and exit"
+#define VERSION_OPT_DESCR "output version and exit"
 
 #endif /* GLOBAL_OPTS_H */
