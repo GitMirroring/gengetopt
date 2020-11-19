@@ -22,6 +22,7 @@
 #endif
 
 @IF@ not include_getopt @THEN@
+#include <unistd.h>
 #include <getopt.h>
 @ENDIF@
 

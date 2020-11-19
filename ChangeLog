@@ -17,6 +17,10 @@
 	* src/skels/file_save_multiple.h_skel: check for write
 	errors in cmdline_parser_dump().
 
+2020-11-19 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/skels/c_source.h_skel: include <unistd.h> along <getopt.h>.
+
 2019-05-30  Tomas Volf <wolf@wolfsden.cz>
 
 	* --unamed command line option renamed to --unnamed, old still
