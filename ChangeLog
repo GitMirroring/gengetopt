@@ -1,3 +1,11 @@
+2020-11-19 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/gm.cc: generate --help and --version handlers
+	even if they are manually added to the config file.
+	* Changed: --help and --version handlers are always
+	generated unless --no-handle-help or --no-handle-version
+	are specified.
+
 2020-11-18 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/cmdline.ggo, src/gengetopt.cc, src/global_opts.h,

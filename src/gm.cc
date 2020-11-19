@@ -1672,7 +1672,7 @@ CmdlineParserCreator::handle_options(ostream &stream, unsigned int indentation, 
           option_gen.set_option_var_name (opt->var_arg);
           option_gen.set_final_instructions("");
 
-          if (!no_help && ((opt->short_opt == HELP_SHORT_OPT &&
+          if (((opt->short_opt == HELP_SHORT_OPT &&
                   strcmp(opt->long_opt, HELP_LONG_OPT) == 0)
                   || strcmp(opt->long_opt, HELP_LONG_OPT) == 0
                   || strcmp(opt->long_opt, FULL_HELP_LONG_OPT) == 0
@@ -1713,7 +1713,7 @@ CmdlineParserCreator::handle_options(ostream &stream, unsigned int indentation, 
               }
           }
 
-          if (!no_version && ((opt->short_opt == VERSION_SHORT_OPT && strcmp(opt->long_opt, VERSION_LONG_OPT) == 0)
+          if (((opt->short_opt == VERSION_SHORT_OPT && strcmp(opt->long_opt, VERSION_LONG_OPT) == 0)
                   || strcmp(opt->long_opt, VERSION_LONG_OPT) == 0)) {
               if (no_handle_version) {
                   option_gen.set_long_option (VERSION_LONG_OPT);
