@@ -1009,7 +1009,9 @@ any, will be ignored. In case you want to have full control on @code{--help|-h},
 @cindex @code{--no-version}
 With these options@footnote{Since version 2.22.} you can disable the automatic
 addition of options @code{--help|-h} and @code{--version|-V}, respectively. The
-programmer will then be able to add these options in the input file and handle
+programmer will then be able to add these options in the input file, and either
+have them handled by default or specify @code{--no-handle-help} and
+@code{--no-handle-version} respectively to manually handle
 them as he sees fit. Notice that @code{--no-help} will also disable the
 automatic options @code{--detailed-help} and @code{--full-help}. The programmer
 can still define options with short character @code{h} and @code{V} as he wants,
