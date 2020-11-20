@@ -424,7 +424,7 @@ check_possible_values(const char *val, const char *values[])
 
 @ENDIF@
 
-static void
+static int
 write_into_file(FILE *outfile, const char *opt, const char *arg, const char *values[])
 {
   @IF@ check_possible_values @THEN@
@@ -438,43 +438,41 @@ write_into_file(FILE *outfile, const char *opt, const char *arg, const char *val
       found = check_possible_values(arg, values);      
     }
     if (found >= 0)
-      fprintf(outfile, "%s=\"%s\" # %s\n", opt, arg, values[found]);
+      return fprintf(outfile, "%s=\"%s\" # %s\n", opt, arg, values[found]);
     else
-      fprintf(outfile, "%s=\"%s\"\n", opt, arg);
+      return fprintf(outfile, "%s=\"%s\"\n", opt, arg);
     @ELSE@
-    fprintf(outfile, "%s=\"%s\"\n", opt, arg);
+    return fprintf(outfile, "%s=\"%s\"\n", opt, arg);
     @ENDIF@
   } else {
-    fprintf(outfile, "%s\n", opt);
+    return fprintf(outfile, "%s\n", opt);
   }
 }
 
 @IF@ multiple_options @THEN@
-static void
+static int
 write_multiple_into_file(FILE *outfile, int len, const char *opt, char **arg, const char *values[])
 {
   int i;
   
   for (i = 0; i < len; ++i)
-    write_into_file(outfile, opt, (arg ? arg[i] : 0), values);
+    if(write_into_file(outfile, opt, (arg ? arg[i] : 0), values) < 0)
+      return -1;
+
+  return 0;
 }
 @ENDIF@
 
 int
 @parser_name@_dump(FILE *outfile, struct @args_info@ *args_info)
 {
-  int i = 0;
-
-  if (!outfile)
-    {
-      fprintf (stderr, "%s: cannot dump options to stream\n", @package_var_name@);
-      return EXIT_FAILURE;
-    }
-
   @file_save_loop:method@
 
-  i = EXIT_SUCCESS;
-  return i;
+  return EXIT_SUCCESS;
+
+error:
+  fprintf (stderr, "%s: cannot dump options to stream\n", @package_var_name@);
+  return EXIT_FAILURE;
 }
 
 int

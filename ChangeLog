@@ -2,6 +2,12 @@
 
 	* src/gm.cc: correct test for when to generate _strdup().
 
+2020-11-20 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/skels/c_source.h_skel, src/skels/file_save.h_skel,
+	* src/skels/file_save_multiple.h_skel: check for write
+	errors in cmdline_parser_dump().
+
 2019-05-30  Tomas Volf <wolf@wolfsden.cz>
 
 	* --unamed command line option renamed to --unnamed, old still
