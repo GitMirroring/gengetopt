@@ -1,3 +1,7 @@
+2020-11-26 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* doc/README.example: correct example generation and compilation.
+
 2019-05-30  Tomas Volf <wolf@wolfsden.cz>
 
 	* --unamed command line option renamed to --unnamed, old still

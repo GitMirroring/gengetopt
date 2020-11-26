@@ -9,7 +9,7 @@ c++ -o main1 main1.cc cmdline1.c
 # commands to try the C example: 
 
 gengetopt --input=sample2.ggo --func-name=my_cmdline_parser --file-name=cmdline2 --unnamed-opts
-gcc -o main2 main2.c cmdline2.c -DMY_CMDLINE_PARSER_PACKAGE=\"sample2\" -DMY_CMDLINE_PARSER_VERSION=\"2.0\"
+gcc -o main2 main2.c cmdline2.c -DPACKAGE=\"sample2\" -DVERSION=\"2.0\"
 ./main2 -h
 
 # commands to try the manual help
