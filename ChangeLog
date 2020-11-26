@@ -7,6 +7,10 @@
 	* src/fileutils.cpp: softer error when output directory
 	cannot be written into.
 
+2020-11-26 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* doc/README.example: correct example generation and compilation.
+
 2020-11-20 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/skels/c_source.h_skel, src/skels/file_save.h_skel,
