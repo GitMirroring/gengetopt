@@ -2,6 +2,11 @@
 
 	* src/gm.cc: correct test for when to generate _strdup().
 
+2020-11-27 Nick Markham <nrmarkham+gnu@gmail.com>
+
+	* src/fileutils.cpp: softer error when output directory
+	cannot be written into.
+
 2020-11-20 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/skels/c_source.h_skel, src/skels/file_save.h_skel,
@@ -1529,4 +1534,3 @@
         automake renames the c file to scanner.c
 
         * started to use automake and autoconf; created src and doc dir
-
