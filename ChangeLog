@@ -9,6 +9,7 @@
 	Reorder the display of --help and --version for --help option
 	and rephrase their description.
 	* Changed: the output of the generated --help is modified.
+	* src/skels/c_source.h_skel: include <unistd.h> along <getopt.h>.
 
 2019-05-30  Tomas Volf <wolf@wolfsden.cz>
 
