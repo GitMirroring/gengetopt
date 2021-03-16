@@ -48,8 +48,9 @@ open_fstream (const char *filename)
 
   if ( ! (*fstream) )
     {
-      fprintf( stderr, "Error creating %s\n", filename ) ;
-      abort() ;
+      fprintf( stderr, "Error creating %s: ", filename ) ;
+      perror(NULL);
+      exit(EXIT_FAILURE);
     }
 
   return fstream;

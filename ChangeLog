@@ -1,3 +1,8 @@
+2020-11-27 Nick Markham <nrmarkham+gnu@gmail.com>
+
+	* src/fileutils.cpp: softer error when output directory
+	cannot be written into.
+
 2020-11-27 David Binderman <dcb314@hotmail.com>
 
 	* src/gm.cc: correct test for when to generate _strdup().
