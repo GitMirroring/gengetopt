@@ -1,3 +1,9 @@
+2020-11-20 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/skels/c_source.h_skel, src/skels/file_save.h_skel,
+	* src/skels/file_save_multiple.h_skel: check for write
+	errors in cmdline_parser_dump().
+
 2020-11-19 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/skels/option_arg.h_skel: fix typo.
