@@ -1,3 +1,7 @@
+2020-11-19 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* src/skels/option_arg.h_skel: fix typo.
+
 2020-11-18 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/cmdline.ggo, src/gengetopt.cc, src/global_opts.h,
