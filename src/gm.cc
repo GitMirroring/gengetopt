@@ -263,7 +263,7 @@ CmdlineParserCreator::CmdlineParserCreator (char *function_name,
   if (! gen_strdup)
     {
       foropt
-        if (opt->type != ARG_FLAG || opt->type != ARG_NO) {
+        if (opt->type != ARG_FLAG && opt->type != ARG_NO) {
           gen_strdup = true;
           break;
         }
