@@ -9,6 +9,7 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 skels = \
+	bash_autocompletion.sh.h \
 	c_source.h_skel \
 	check_modes.h_skel \
 	clear_arg.h_skel \
@@ -52,12 +53,17 @@ c_gens = $(skels:.h_skel=.cc)
 		$(MAKE) $(AM_MAKEFLAGS) $<; \
 	fi
 
+bash_autocompletion.sh.h: bash_autocompletion.sh.cc
+bash_autocompletion.sh.cc: bash_autocompletion.sh.skel
+	$(GENGEN) -i $< -F $(@:.cc=.h) -f $(@:.sh.cc=) \
+		--separate-files --expand-tabs --force
+
 noinst_LTLIBRARIES = libgen.la
 
 libgen_la_SOURCES = $(BUILT_SOURCES)
 
-BUILT_SOURCES = $(h_gens) $(c_gens)
-EXTRA_DIST = $(skels) $(BUILT_SOURCES)
+BUILT_SOURCES = $(h_gens) $(c_gens) bash_autocompletion.sh.cc
+EXTRA_DIST = $(skels) bash_autocompletion.sh.skel $(BUILT_SOURCES)
 
 built-clean:
 	cd @srcdir@ && rm -f $(BUILT_SOURCES)

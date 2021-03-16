@@ -32,6 +32,9 @@ class AcceptedValues : protected std::list<std::string>
     using std::list<std::string>::begin;
     using std::list<std::string>::end;
 
+    const_iterator begin() { return this->begin(); };
+    const_iterator end() { return this->end(); }
+
     void insert(const std::string &s);
     const std::string toString(bool escape = true) const;
     bool contains(const std::string &s) const;

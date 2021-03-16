@@ -21,11 +21,14 @@
 #ifndef _GM_H
 #define _GM_H
 
+#include "cmdline.h"
+
 #include "skels/header.h"
 #include "skels/c_source.h"
 
 #include <list>
 #include <string>
+#include <map>
 
 #define TAB_LEN 2
 
@@ -47,6 +50,7 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
   string comment;
   char *unnamed_options;
   string show_required_string;
+  const char ** shell_autocompletion;
 
   bool long_help;
   bool no_handle_help;
@@ -86,6 +90,15 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
   int generate_header_file();
   int generate_source();
 
+  typedef std::map<std::string, unsigned int> autocompletion_cluster_element;
+  typedef std::map<std::string, autocompletion_cluster_element> autocompletion_cluster;
+
+  int add_to_autocompletion_cluster(autocompletion_cluster & cluster, const char * name, char short_, const char * long_, unsigned int count);
+  void print_autocompletion_cluster(autocompletion_cluster & cluster, std::stringstream & names, std::stringstream & def, const char * tab);
+
+  int generate_autocompletion_scripts();
+  int generate_bash_autocompletion_script(ostream &stream);
+  
   string generate_getopt_string();
 
   // to be implemented in header_gen_class
@@ -144,7 +157,8 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
                         const string &outdir,
                         const string &header_outdir,
                         const string &src_outdir,
-                        const string &show_required);
+                        const string &show_required,
+			const char ** shell_autocompletion);
 
   int generate();
 

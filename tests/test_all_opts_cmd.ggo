@@ -24,6 +24,8 @@ option "float"       f "float option" float optional
 option "double"      d "double option" double optional
 option "longdouble"  D "longdouble option" longdouble optional
 option "longlong"    L "longlong option" longlong optional
+option "filename"    - "filename option" filename optional
+option "directory"   - "directory option" directory optional
 option "flag"        F "flag option" flag on
 option "function"    u "function option" optional
   details="\na `function' option is basically an option with no argument.  It can be used, e.g., to specify a specific behavior for a program.

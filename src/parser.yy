@@ -189,6 +189,7 @@ struct multiple_size
 %token              TOK_VALUES          "values"
 %token              TOK_HIDDEN      "hidden"
 %token              TOK_DEPENDON      "dependon"
+%token              TOK_AUTOCOMPLETION    "autocompletion"
 %token <str>        TOK_STRING
 %token <chr>        TOK_CHAR
 %token <argtype>    TOK_ARGTYPE
@@ -545,6 +546,11 @@ option_parts: option_parts opt_yesno
         {
           $$ = $1;
           $$->flagstat = $2;
+        }
+      | option_parts TOK_AUTOCOMPLETION '=' TOK_STRING
+        {
+	  $$ = $1;
+	  $$->autocompletion_function = strdup($4);
         }
       | { $$ = new gengetopt_option; }
       ;

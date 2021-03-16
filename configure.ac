@@ -171,5 +171,6 @@ AC_CONFIG_TEST_SH([tests/test_values.sh])
 AC_CONFIG_TEST_SH([tests/test_values_err.sh])
 AC_CONFIG_TEST_SH([tests/test_wrong_ggo.sh])
 AC_CONFIG_TEST_SH([tests/valgrind_tests.sh])
+AC_CONFIG_TEST_SH([tests/test_bash_autocompletion.sh])
 
 AC_OUTPUT

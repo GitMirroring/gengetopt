@@ -102,6 +102,8 @@ section "Additional options"
 
 option  "include-getopt" G "adds the code for getopt_long in the generated C file" optional
 
+option  "autocomplete" A "generates autocompletion scripts" enum values="bash" default="bash" optional multiple
+
 option  "no-handle-help"   n "do not handle --help|-h automatically" optional
 	details="\nIf --no-handle-help is specified, the command line option \
 --help|-h will not be handled automatically, so the programmer will be able \

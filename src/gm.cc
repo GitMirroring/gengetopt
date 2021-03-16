@@ -69,6 +69,7 @@ extern "C"
 #include "skels/custom_getopt_gen.h"
 #include "skels/check_modes.h"
 #include "skels/enum_decl.h"
+#include "skels/bash_autocompletion.sh.h"
 #include "gm_utils.h"
 #include "fileutils.h"
 
@@ -170,7 +171,8 @@ CmdlineParserCreator::CmdlineParserCreator (char *function_name,
                                             const string &outdir,
                                             const string &header_outdir,
                                             const string &src_outdir,
-                                            const string &show_required) :
+                                            const string &show_required,
+					    const char ** shell_autocompletion) :
   filename (filename_),
   args_info_name (struct_name),
   output_dir (outdir),
@@ -179,6 +181,7 @@ CmdlineParserCreator::CmdlineParserCreator (char *function_name,
   comment (comment_),
   unnamed_options (unnamed_options_),
   show_required_string (show_required),
+  shell_autocompletion (shell_autocompletion),
   long_help (long_help_), no_handle_help (no_handle_help_),
   no_help (no_help_),
   no_handle_version (no_handle_version_),
@@ -313,7 +316,11 @@ void CmdlineParserCreator::set_has_arg_types() {
         case ARG_FLAG:
             set_has_arg_flag(true);
             break;
-        case ARG_STRING:
+	case ARG_FILE:
+	case ARG_DIR:
+	    opt->orig_type = opt->type;
+	    opt->type = ARG_STRING;
+	case ARG_STRING:
             set_has_arg_string(true);
             break;
         case ARG_INT:
@@ -368,7 +375,13 @@ CmdlineParserCreator::generate ()
   if (head_result)
     return head_result;
 
-  return generate_source ();
+  head_result = generate_source ();
+  if (head_result)
+    return head_result;
+
+  head_result = generate_autocompletion_scripts();
+
+  return head_result;
 }
 
 int
@@ -1987,6 +2000,297 @@ CmdlineParserCreator::generate_source ()
   generate_c_source (*output_file);
   output_file->close ();
   delete output_file;
+
+  return 0;
+}
+
+int
+CmdlineParserCreator::generate_autocompletion_scripts()
+{
+  const char * shells[] = { "bash" };
+
+  const char ** shell = this->shell_autocompletion;
+
+  while(*shell != nullptr)
+    {
+      for (unsigned int i = 0; i < sizeof(shells)/sizeof(shells[0]); ++i)
+	{
+	  if (strcmp (*shell, shells[i]) == 0)
+	    {
+	      ofstream *output_stream = open_fstream ((string(this->filename) + "." + *shell).c_str());
+	      if(output_stream == nullptr) return 1;
+	      int status = 0;
+
+	      switch(i)
+		{
+		case  0: status = this->generate_bash_autocompletion_script(*output_stream); break;
+		default: status = 1;
+		}
+
+	      output_stream->close ();
+	      delete output_stream;
+
+	      if (status)
+		return status;
+	    }
+	}
+
+      ++shell;
+    }
+
+  return 0;
+}
+
+int CmdlineParserCreator::add_to_autocompletion_cluster(autocompletion_cluster & cluster, const char * name, char short_, const char * long_, unsigned int count)
+{
+  typename autocompletion_cluster::iterator element = cluster.find(name);
+
+  if(element == cluster.end())
+    {
+      std::pair<typename autocompletion_cluster::iterator, bool> check =
+	cluster.insert(std::pair<std::string, autocompletion_cluster_element>
+		       (name, autocompletion_cluster_element()));
+
+      if(!check.second)
+	return 1;
+
+      element = check.first;
+    }
+
+  if (short_ != 0 && long_ == nullptr
+      && !element->second.insert(std::pair<std::string, unsigned int>(std::string("-") + short_, count)).second)
+    return 1;
+
+  if (long_ != nullptr
+      && !element->second.insert(std::pair<std::string, unsigned int>(std::string("--") + long_, count)).second)
+    return 1;
+
+  return 0;
+}
+
+void CmdlineParserCreator::print_autocompletion_cluster(autocompletion_cluster & cluster, std::stringstream & names, std::stringstream & def, const char * tab)
+{
+  for (typename autocompletion_cluster::const_iterator element = cluster.begin(); element != cluster.end(); ++element)
+    {
+      names << tab << "\"" << element->first << "\"" << std::endl;
+
+      def << "declare -A " << element->first << "=(" << std::endl;
+
+      for (typename autocompletion_cluster_element::const_iterator option = element->second.begin(); option != element->second.end(); ++option)
+	{
+	  def << tab << "[\"" << option->first << "\"]=" << option->second << std::endl;
+	}
+
+      def << ")" << std::endl;
+    }
+}
+
+int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
+{
+  bash_autocompletion_gen_class script;
+
+  script.set_generator_version("version " VERSION);
+  script.set_command_line(this->comment);
+
+  const std::string command = gengetopt_package ? gengetopt_package : "<command>";
+  script.set_command(command);
+
+  if (unnamed_options)
+    script.set_unnamed(std::string("_") +  command + "_autocomplete_unnamed");
+  else
+    script.set_unnamed(":");
+
+  std::stringstream functions;
+  std::stringstream options;
+  autocompletion_cluster modes;
+  autocompletion_cluster groups;
+  std::stringstream dependon;
+  std::stringstream shortoptions;
+  std::stringstream long2shortoptions;
+  std::stringstream argtype;
+  std::stringstream argoptional;
+
+  const char * tab = "    ";
+
+  for (gengetopt_option_list::const_iterator it = gengetopt_options.begin();
+       it != gengetopt_options.end(); ++it)
+    {
+      const struct gengetopt_option & option = **it;
+
+      unsigned int count = 1;
+      if (option.multiple)
+	{
+	  count = 0;
+
+	  if (std::atoi(option.multiple_max) != -1)
+	    count = std::atoi(option.multiple_max);
+	}
+
+      if (option.mode_value != nullptr)
+	{
+	  if (this->add_to_autocompletion_cluster(modes, option.mode_value, option.short_opt, option.long_opt, count))
+	    return 1;
+	}
+      else if (option.group_value != nullptr)
+	{
+	  if (this->add_to_autocompletion_cluster(groups, option.group_value, option.short_opt, option.long_opt, count))
+	    return 1;
+	}
+      else
+	{
+	  if (option.short_opt != 0 && option.long_opt == nullptr)
+	    options << tab << "[\"-" << option.short_opt << "\"]" << "=" << count << std::endl;
+
+	  if (option.long_opt != nullptr)
+	    options << tab << "[\"--" << option.long_opt << "\"]" << "=" << count << std::endl;
+	}
+
+      if (option.dependon != nullptr)
+	{
+	  if (option.short_opt != 0)
+	    {
+	      dependon << tab << "[\"--"<< option.dependon << "\"]" << "=" << "\"-" << option.short_opt << "\"" << std::endl;
+	    }
+
+	  if (option.long_opt != nullptr)
+	    {
+	      dependon << tab << "[\"--" << option.dependon << "\"]" << "=" << "\"--" << option.long_opt << "\"" << std::endl;
+	    }
+	}
+
+      if (option.short_opt != 0 && option.long_opt != nullptr)
+	{
+	  shortoptions << "[\"-" << option.short_opt << "\"]=\"--" << option.long_opt << "\"" << std::endl;
+	  long2shortoptions << "[\"--" << option.long_opt << "\"]=\"-" << option.short_opt << "\"" << std::endl;
+	}
+      
+      if (option.type != ARG_NO && option.type != ARG_FLAG)
+	{
+	  std::string option_name;
+
+	  if (option.long_opt != nullptr)
+	    option_name = option.long_opt;
+	  else
+	    option_name = option.short_opt;
+
+	  if (option.acceptedvalues != nullptr)
+	    {
+	      functions << "_" << command << "_autocomplete_" << option_name << "_";
+	      if (option.arg_is_optional)
+		functions << "opt";
+	      functions << "arg () {"
+			<< std::endl
+			<< tab << "COMPREPLY=($(IFS=$'|'; compgen -W \"";
+
+	      for(AcceptedValues::const_iterator it = option.acceptedvalues->begin(); it != option.acceptedvalues->end(); ++it)
+		{
+		  functions << *it << "|";
+		}
+
+	      functions << "\" -- \"$2\"))" << std::endl
+			<< std::endl;
+
+	      if (!option.arg_is_optional)
+		{
+		  functions << tab << "_" << command << "_autocomplete_loopback" << std::endl;
+		}
+
+	      functions << "}" << std::endl
+			<< std::endl;
+	    }
+
+	  std::string match = "\"";
+
+	  if (option.short_opt != 0)
+	    match += std::string("-") + option.short_opt + "\"";
+
+	  if (option.long_opt != nullptr)
+	    {
+	      if (option.short_opt != 0)
+		match += "|\"";
+
+	      match += std::string("--") + option.long_opt;
+	      match += "\"";
+	    }
+
+	  if (option.arg_is_optional)
+	    {
+	      argoptional << tab << match << ") ";
+
+	      if (option.autocompletion_function != nullptr)
+		argoptional << option.autocompletion_function;
+	      else
+		{
+		  argoptional << "_" << command << "_autocomplete_";
+
+		  if (option.orig_type == ARG_FILE)
+		    argoptional << "filename";
+		  else if (option.orig_type == ARG_DIR)
+		    argoptional << "dirname";
+		  else
+		    argoptional << option_name;
+
+		  argoptional << "_optarg";
+		}
+
+	      argoptional << " \"$1\" \"$2\" \"$3\" ;;"
+			  << std::endl;
+	    }
+	  else
+	    {
+	      argtype << tab << match << ") ";
+
+	      if (option.autocompletion_function != nullptr
+		  || option.orig_type == ARG_FILE
+		  || option.orig_type == ARG_DIR
+		  || option.acceptedvalues != nullptr)
+		{
+		  argtype << "_" << command << "_autocomplete_with ";
+
+		  if (option.autocompletion_function != nullptr)
+		    argtype << option.autocompletion_function;
+		  else if (option.orig_type == ARG_FILE)
+		    argtype << "_" << command << "_autocomplete_filename_arg";
+		  else if (option.orig_type == ARG_DIR)
+		    argtype << "_" << command << "_autocomplete_dirname_arg";
+		  else if (option.acceptedvalues != nullptr)
+		    argtype << "_" << command << "_autocomplete_" << option_name << "_arg";
+
+		  argtype << ";";
+		}
+
+	      argtype << " return ;;" << std::endl;
+	    }
+	}
+    }
+
+  script.set_autocomplete_with(functions.str());
+  script.set_options(options.str());
+  script.set_dependon(dependon.str());
+  script.set_shortoptions(shortoptions.str());
+  script.set_long2shortoptions(long2shortoptions.str());
+  script.set_argtype(argtype.str());
+  script.set_argoptional(argoptional.str());
+
+  {
+    std::stringstream names;
+    std::stringstream def;
+
+    print_autocompletion_cluster(modes, names, def, tab);
+    script.set_modes_names(names.str());
+    script.set_modes_def(def.str());
+  }
+
+  {
+    std::stringstream names;
+    std::stringstream def;
+
+    print_autocompletion_cluster(groups, names, def, tab);
+    script.set_groups_names(names.str());
+    script.set_groups_def(def.str());
+  }
+
+  script.generate_bash_autocompletion(stream);
 
   return 0;
 }
