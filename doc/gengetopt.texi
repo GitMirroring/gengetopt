@@ -458,7 +458,7 @@ Note that if @code{--strict-hidden} is used, options that are hidden
 If no type is specified the option does not accept an argument.
 @code{filename} and @code{directory} behave exactly as @code{string}
 except that they will be used to generate specific autocompletion
-functions if @code{--autocompletion=<shell>} is supplied
+functions if @code{--autocomplete=<shell>} is supplied
 (see @ref{Autocompletion}).
 
 @cindex typestr
@@ -534,7 +534,7 @@ Options}.
 @cindex autocompletion
 @item autocompletion="<function>"
 
-If an option has an argument, either optional or mandatory, and the @code{--autocompletion}
+If an option has an argument, either optional or mandatory, and the @code{--autocomplete}
 option is supplied, the @code{function} is used to autocomplete the arguments, overriding
 the default autocompletion function. See @ref{Autocompletion}.
 
@@ -1827,13 +1827,13 @@ Notice that this is independent from the @code{required} flag.
 @chapter Autocompletion
 @cindex autocompletion
 
-Autocompletion files can be generated with the @code{--autocompletion} option and
-is, for the moment, limited to Bash (@code{--autocompletion=bash}).
+Autocompletion files can be generated with the @code{--autocomplete} option and
+is, for the moment, limited to Bash (@code{--autocomplete=bash}).
 
 The output is sent to a file named according to the @code{--file-name="<cmdline>"}
 option and suffixed by the shell name (@code{cmdline.bash} in this default case).
 The executable targeted by the autocompletion function is given by the @code{package}
-entry of the configuration file.
+entry of the configuration file or set with @code{--set-package=<package>}.
 
 Despite generating autocompletion for option names, the script attempts to
 provide autocompletion for options accepting values based either on the
@@ -1869,7 +1869,7 @@ to be used as the new compspec for the program. Such
 completion functions must call the @code{_<package>_autocomplete_loopback}
 function before returning in order to reset the compspec to the general
 function @code{_<package>_autocomplete} once the value completion is terminated
-(i.e. there at most one possible completion left).
+(i.e. there is at most one possible completion left).
 
 For options with a @code{filename} or @code{directory} @code{argtype},
 Bash's @code{_filedir} builtin function is used. In the event that this

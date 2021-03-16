@@ -2089,6 +2089,9 @@ int CmdlineParserCreator::generate_bash_autocompletion_script(ostream &stream)
 {
   bash_autocompletion_gen_class script;
 
+  script.set_generator_version("version " VERSION);
+  script.set_command_line(this->comment);
+
   const std::string command = gengetopt_package ? gengetopt_package : "<command>";
   script.set_command(command);
 

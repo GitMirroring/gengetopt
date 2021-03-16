@@ -1,3 +1,9 @@
+2021-03-16 Grégoire Scano <gregoire.scano@malloc.fr>
+
+	* doc/gengetopt.texi: correct typos in documentation.
+	* src/gm.cc, src/skels/bash_autocompletion.sh.skel: add copyright
+	disclaimer to generated autocompletion file.
+
 2020-08-06 Grégoire Scano <gregoire.scano@malloc.fr>
 
 	* src/Makefile.am: generate bash autocompletion
