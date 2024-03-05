@@ -205,7 +205,7 @@ main (int argc, char **argv)
       gengetopt_options.push_front(opt);
   }
 
-  if (!args_info.no_help_given && has_options_with_details(args_info.strict_hidden_given) && 
+  if (!args_info.no_help_given && has_options_with_details(args_info.strict_hidden_given) &&
       gengetopt_has_option(DETAILED_HELP_LONG_OPT, 0) == 0)
   {
       gengetopt_create_option (opt, DETAILED_HELP_LONG_OPT, '-',
