@@ -167,7 +167,7 @@ update_count_line (char *str)
         if (*p == '\n') {
           ++gengetopt_count_line;
           tokenpos = 0 ; /* reset token position */
-          strncpy (linebuf, ( (p+1) ? p+1 : ""), LINEBUF_LEN - 1);
+          strncpy (linebuf, ( *(p+1) ? p+1 : ""), LINEBUF_LEN - 1);
         }
     }
   else
