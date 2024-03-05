@@ -107,7 +107,7 @@ output can be used; this function is called \
 that, although the programmer can handle --help|-h manually, the \
 parser will return after finding such option: the other command \
 line options, if any, will be ignored.  In case you want to have full \
-control on --help|-h, you should use --ho-help.\n"
+control on --help|-h, you should use --no-help.\n"
 	
 option  "no-help"   - "do not add --help|-h automatically" optional
 	details="\nWith this option you can disable the \
