@@ -311,7 +311,7 @@ void wrap_cstr(string& wrapped, unsigned int from_column,
             // trim leading spaces
             std::size_t pos = next_word.find_first_not_of(' ');
             if( pos == std::string::npos )
-                next_word.empty();
+                next_word.clear();
             else if( pos )
                 next_word.erase( 0, pos );
 
