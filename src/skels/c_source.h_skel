@@ -824,7 +824,7 @@ int update_arg(void *field, char **orig_field,
 @ENDIF@
 @IF@ has_arg_int @THEN@
   case ARG_INT:
-    if (val) *((int *)field) = strtol (val, &stop_char, 0);
+    if (val) *((int *)field) = (int)strtol (val, &stop_char, 0);
     break;
 @ENDIF@
 @IF@ has_arg_short @THEN@
