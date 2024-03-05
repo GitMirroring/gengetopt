@@ -578,7 +578,7 @@ gengetopt_create_option (gengetopt_option *&n, const char * long_opt, char short
   n->long_opt = strdup (long_opt);
   if (n->long_opt == NULL)
     {
-      free (n);
+      delete n;
       return NOT_ENOUGH_MEMORY;
     }
 
@@ -586,7 +586,7 @@ gengetopt_create_option (gengetopt_option *&n, const char * long_opt, char short
   if (n->desc == NULL)
     {
       free (n->long_opt);
-      free (n);
+      delete n;
       return NOT_ENOUGH_MEMORY;
     }
 
