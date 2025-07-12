@@ -540,7 +540,7 @@ Hidden options are also displayed in the output of @code{--detailed-help}, if it
 is present, along with any details that those options have.
 
 Note that when @code{--strict-hidden} is used, hidden options do not appear as
-described above, although they can still be given on the comand line. That is to
+described above, although they can still be given on the command line. That is to
 say, the @code{--full-help} option is not generated, and hidden options do not
 appear in the output of @code{--detailed-help}, even if they have details.
 
