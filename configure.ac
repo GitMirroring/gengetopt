@@ -16,7 +16,7 @@
 # with gengetopt; see the file COPYING.
 
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(GNU gengetopt,2.23)
+AC_INIT([GNU gengetopt],[2.23])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
@@ -41,7 +41,7 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_YACC
 
-AM_PROG_LIBTOOL
+LT_INIT
 AM_PROG_LEX
 
 dnl add options for non GNU compilers
