@@ -1,0 +1,4 @@
+# This list is used to avoid multiple name/email instances of the same
+# contributors reported by "git log" and "git shortlog" commands.
+
+Tomas Volf <~@wolfsden.cz> <wolf@wolfsden.cz>
