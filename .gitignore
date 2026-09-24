@@ -20,6 +20,7 @@
 /autom4te.cache
 /build
 /build-aux/*
+/gl
 
 # Files
 .dirstamp
@@ -45,12 +46,6 @@ test-suite.log
 /m4/ltsugar.m4
 /m4/ltversion.m4
 /m4/lt~obsolete.m4
-
-/gl/arg-nonnull.h
-/gl/c++defs.h
-/gl/string.h
-/gl/unistd.h
-/gl/warn-on-use.h
 
 
 
