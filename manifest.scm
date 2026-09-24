@@ -1,16 +1,20 @@
-(use-modules (gnu packages autotools)
-             (gnu packages bison)
-             (gnu packages commencement)
-             (gnu packages flex)
-             (gnu packages man)
-             (gnu packages popt)
-             (guix build-system gnu)
-             (guix download)
-             (guix licenses)
-             (guix packages)
-             (guix profiles)
-             (guix utils)
-             (srfi srfi-1))
+(define-module (manifest)
+  #:use-module ((gnu packages autotools) #:select (autoconf
+                                                   automake
+                                                   libtool))
+  #:use-module ((gnu packages bison) #:select (bison))
+  #:use-module ((gnu packages compiler-tools) #:select (flex))
+  #:use-module ((gnu packages man) #:select (help2man))
+  #:use-module ((gnu packages popt) #:select (gengetopt))
+  #:use-module ((guix build-system gnu) #:select (gnu-build-system))
+  #:use-module ((guix download) #:select (url-fetch))
+  #:use-module ((guix licenses) #:prefix license:)
+  #:use-module ((guix packages) #:select (base32
+                                          package
+                                          origin))
+  #:use-module ((guix profiles) #:select (concatenate-manifests
+                                          package->development-manifest
+                                          packages->manifest)))
 
 (define gengen
   (package
@@ -19,8 +23,7 @@
     (source
      (origin
        (method url-fetch)
-       (uri (string-append "mirror://gnu/gengen/gengen-"
-                           version ".tar.gz"))
+       (uri (string-append "mirror://gnu/gengen/gengen-" version ".tar.gz"))
        (sha256
         (base32
          "1scq0za8xjlls7n1bglrx07x5z3nnhvwnh0zm7vnq589dihxx6zl"))))
@@ -37,7 +40,7 @@ with values.
 At the moment Gengen can generate C++ or C code; however other target languages
 are under development (e.g., Java).")
     (home-page "https://www.gnu.org/software/gengen")
-    (license gpl3+)))
+    (license license:gpl3+)))
 
 (concatenate-manifests
  (list
@@ -45,9 +48,8 @@ are under development (e.g., Java).")
                             automake
                             bison
                             flex
-                            (specification->package "gcc-toolchain")
                             gengen
-                            gengetopt
+                            gengetopt   ;we need ourself for build from git
                             help2man
                             libtool))
   (package->development-manifest gengetopt)))
