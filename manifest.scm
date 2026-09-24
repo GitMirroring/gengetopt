@@ -3,6 +3,7 @@
                                                    automake
                                                    libtool))
   #:use-module ((gnu packages bison) #:select (bison))
+  #:use-module ((gnu packages build-tools) #:select (gnulib))
   #:use-module ((gnu packages compiler-tools) #:select (flex))
   #:use-module ((gnu packages man) #:select (help2man))
   #:use-module ((gnu packages popt) #:select (gengetopt))
@@ -50,6 +51,7 @@ are under development (e.g., Java).")
                             flex
                             gengen
                             gengetopt   ;we need ourself for build from git
+                            gnulib
                             help2man
                             libtool))
   (package->development-manifest gengetopt)))
