@@ -83,7 +83,6 @@ AC_ARG_WITH(
 )
 AC_SUBST(GENGETOPT, $GENGETOPT_TO_USE)
 
-AC_CXX_HAVE_STL
 AC_CXX_HAVE_SSTREAM
 
 dnl for executable extensions
