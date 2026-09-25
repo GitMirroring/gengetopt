@@ -19,7 +19,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT([GNU gengetopt],[2.23])
 
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4 gl/m4])
 
 AC_CONFIG_HEADERS([config.h])
 
