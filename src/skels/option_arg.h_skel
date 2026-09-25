@@ -1,9 +1,5 @@
 @IF@ long_long_arg @THEN@
-#if defined(HAVE_LONG_LONG) || defined(HAVE_LONG_LONG_INT)
 @type@ @name@_arg;	/**< @@brief @desc@@if@ has_default @then@ (default=@default_value@)@endif@.  */
-#else
-@longtype@ @name@_arg;	/**< @@brief @desc@@if@ has_default @then@ (default=@default_value@)@endif@.  */
-#endif
 @origtype@ @name@_orig;	/**< @@brief @desc@ original value given at command line.  */
 @ELSEIF@ flag_arg @THEN@
 @type@ @name@_flag;	/**< @@brief @desc@ (default=@if@ default_on @then@on@else@off@endif@).  */

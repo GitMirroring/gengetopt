@@ -496,17 +496,6 @@ _generate_option_arg(ostream &stream,
       option_arg_gen.set_default_on(opt->flagstat);
     }
 
-  if (opt->type == ARG_LONGLONG)
-    {
-      // the fallback type in case longlong is not supported by the compiler
-      string longtype = arg_types[ARG_LONG];
-      if (opt->multiple)
-          longtype += "*";
-
-      option_arg_gen.set_long_long_arg(true);
-      option_arg_gen.set_longtype(longtype);
-    }
-
   option_arg_gen.generate_option_arg(stream, indentation);
 }
 
@@ -2059,5 +2048,3 @@ CmdlineParserCreator::generate_file_save_loop(ostream &stream, unsigned int inde
     }
   }
 }
-
-

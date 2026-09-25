@@ -160,20 +160,3 @@ AC_DEFUN([adl_FUNC_GETOPT_LONG],
       AC_LIBOBJ(getopt)
       AC_LIBOBJ(getopt1)
       AC_CONFIG_LINKS([src/getopt.h:src/gnugetopt.h])])])])
-
-dnl Available from the GNU Autoconf Macro Archive at:
-dnl http://www.gnu.org/software/ac-archive/htmldoc/ac_c_long_long.html
-dnl
-AC_DEFUN([AC_C_LONG_LONG],
-[AC_CACHE_CHECK(for long long int, ac_cv_c_long_long,
-[if test "$GCC" = yes; then
-  ac_cv_c_long_long=yes
-  else
-        AC_TRY_COMPILE(,[long long int i;],
-   ac_cv_c_long_long=yes,
-   ac_cv_c_long_long=no)
-   fi])
-   if test $ac_cv_c_long_long = yes; then
-     AC_DEFINE(HAVE_LONG_LONG)
-   fi
-])

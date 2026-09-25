@@ -50,7 +50,6 @@ AC_NONGNU_FLAGS
 dnl Checks for typedefs, structures, and compiler characteristics.
 dnl AC_C_CONST obsolescent
 AC_TYPE_SIZE_T
-AC_C_LONG_LONG
 
 AC_CANONICAL_HOST
 
@@ -117,8 +116,6 @@ AC_PATH_PROGS(HELP2MAN, [help2man], [:])
 dnl we want to avoid tests in case we're crosscompiling
 dnl since we would not be able to run the gengetopt executable in that case
 AM_CONDITIONAL(NO_CROSSCOMPILING, test "$cross_compiling" = no )
-
-AH_TEMPLATE(HAVE_LONG_LONG)
 
 AC_CONFIG_FILES([
 	Makefile
