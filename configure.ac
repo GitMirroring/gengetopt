@@ -21,7 +21,7 @@ AC_INIT([GNU gengetopt],[2.23])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 AM_INIT_AUTOMAKE([dist-xz check-news subdir-objects info-in-builddir tar-ustar])
 
