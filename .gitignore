@@ -135,6 +135,9 @@ test-suite.log
 /tests/test_groups
 /tests/test_groups_cmd.c
 /tests/test_groups_cmd.h
+/tests/test_groups_flags
+/tests/test_groups_flags_cmd.c
+/tests/test_groups_flags_cmd.h
 /tests/test_groups_option_help
 /tests/test_main_cmdline_cmd.c
 /tests/test_main_cmdline_cmd.h

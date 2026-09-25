@@ -1,0 +1,14 @@
+#! @SHELL@
+
+set -ex
+
+! "$@" ./test_groups_flags
+! "$@" ./test_groups_flags -a
+! "$@" ./test_groups_flags -d -e
+! "$@" ./test_groups_flags --dumb -e
+! "$@" ./test_groups_flags -d --extended
+! "$@" ./test_groups_flags --dumb -e -a
+"$@" ./test_groups_flags -d
+"$@" ./test_groups_flags -e
+"$@" ./test_groups_flags --dumb
+"$@" ./test_groups_flags --extended

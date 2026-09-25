@@ -1,3 +1,8 @@
+2024-01-05  Dirk Baechle <dl9obn@darc.de>
+
+	* src/gengetopt.cc: fixed option checks when using flag options
+        in groups and provided a simple test for this case
+
 2020-11-27 David Binderman <dcb314@hotmail.com>
 
 	* src/gm.cc: correct test for when to generate _strdup().

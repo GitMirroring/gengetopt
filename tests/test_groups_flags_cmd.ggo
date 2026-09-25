@@ -1,0 +1,6 @@
+package "TestGroupFlags"
+version "1.0"
+
+defgroup "TestFlags" yes
+groupoption "dumb" d "Enable dumb debugging output" group="TestFlags" flag off
+groupoption "extended" e "Enable extended debugging output" group="TestFlags" flag on

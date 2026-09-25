@@ -87,6 +87,7 @@ VALGRINDTESTS = \
 	test_default_values.sh \
 	test_dep.sh \
 	test_groups.sh \
+	test_groups_flags.sh \
 	test_groups_option_help \
 	test_manual_help.sh \
 	test_manual_help_args.sh \
@@ -137,6 +138,7 @@ check_PROGRAMS = \
 	test_conf_parser_ov3 \
 	test_conf_parser_ov4 \
 	test_groups \
+	test_groups_flags \
 	test_groups_option_help \
 	test_manual_help \
 	test_manual_help_args \
@@ -173,6 +175,7 @@ default_values_cmd.h: default_values_cmd.c
 cmdline.h: cmdline.c
 test_all_opts_cmd.h: test_all_opts_cmd.c
 test_groups_cmd.h: test_groups_cmd.c
+test_groups_flags_cmd.h: test_groups_flags_cmd.c
 test_modes_cmd.h: test_modes_cmd.c
 test_conf_parser_cmd.h: test_conf_parser_cmd.c
 test_multiple_cmd.h: test_multiple_cmd.c
@@ -235,6 +238,9 @@ no_prog_name_SOURCES = \
 test_groups_SOURCES = \
 	test_groups.c \
 	test_groups_cmd.ggo
+test_groups_flags_SOURCES = \
+	test_groups_flags.c \
+	test_groups_flags_cmd.ggo
 test_modes_SOURCES = \
 	test_modes.c \
 	test_modes_cmd.ggo
@@ -351,6 +357,8 @@ CHECKDIFFFILES = \
 	test_first_cmdline_cmd.h \
 	test_groups_cmd.c \
 	test_groups_cmd.h \
+	test_groups_flags_cmd.c \
+	test_groups_flags_cmd.h \
 	test_main_cmdline_cmd.c \
 	test_main_cmdline_cmd.h \
 	test_manual_help_args_cmd.c \
@@ -481,6 +489,7 @@ EXTRA_DIST = \
 	test_default_values.sh.in \
 	test_dep.sh.in \
 	test_groups.sh.in \
+	test_groups_flags.sh.in \
 	test_manual_help.sh.in \
 	test_manual_help_args.sh.in \
 	test_manual_help_args_cmd.ggo \

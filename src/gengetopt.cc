@@ -712,6 +712,25 @@ gengetopt_check_option (gengetopt_option *n, bool groupoption, bool modeoption)
   // reset the description
   gengetopt_set_text(0);
 
+  // now we have to check for flag options
+  if (n->type == ARG_FLAG)
+  {
+    if (n->flagstat < 0)
+      return SPECIFY_FLAG_STAT;
+
+    if (n->default_string || n->multiple || n->arg_is_optional
+        || n->type_str || n->acceptedvalues || n->required_set)
+      return NOT_VALID_SPECIFICATION;
+
+    n->required = 0;
+    n->required_set = true;
+  }
+  else
+  {
+    if (n->flagstat >= 0)
+      return NOT_VALID_SPECIFICATION;
+  }
+
   if (n->group_value != 0)
   {
       if (! groupoption)
@@ -751,25 +770,6 @@ gengetopt_check_option (gengetopt_option *n, bool groupoption, bool modeoption)
 
   if (n->group_value && n->mode_value)
       return FOUND_BUG;
-
-  // now we have to check for flag options
-  if (n->type == ARG_FLAG)
-  {
-    if (n->flagstat < 0)
-      return SPECIFY_FLAG_STAT;
-
-    if (n->default_string || n->multiple || n->arg_is_optional
-        || n->type_str || n->acceptedvalues || n->required_set)
-      return NOT_VALID_SPECIFICATION;
-
-    n->required = 0;
-    n->required_set = true;
-  }
-  else
-  {
-    if (n->flagstat >= 0)
-      return NOT_VALID_SPECIFICATION;
-  }
 
   // enum type can only be specified with options with values
   if (n->type == ARG_ENUM && !(n->acceptedvalues)) {
