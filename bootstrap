@@ -3,4 +3,5 @@
 # SPDX-License-Identifier: GPL-3.0-later
 
 gnulib-tool --update
+mkdir -p m4
 autoreconf -vfiW all
