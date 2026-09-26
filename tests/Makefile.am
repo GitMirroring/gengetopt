@@ -523,6 +523,7 @@ CLEANFILES = \
 	*.save \
 	*_cmd.c \
 	*_cmd.h \
+	wrong_ggo/*.out \
 	cmdline.c \
 	cmdline.h
 
