@@ -317,12 +317,16 @@ struct generic_list
 /**
  * @@brief add a node at the head of the list
  */
-static void add_node(struct generic_list **list) {
+static int add_node(struct generic_list **list) {
   struct generic_list *new_node = (struct generic_list *) malloc (sizeof (struct generic_list));
+  if (!new_node) return -1;
+
   new_node->next = *list;
   *list = new_node;
   new_node->arg.string_arg = 0;
   new_node->orig = 0;
+
+  return 0;
 }
 
 @IF@ (not multiple_options_all_string) and multiple_token_functions @THEN@
@@ -962,7 +966,7 @@ int update_multiple_arg_temp(struct generic_list **list,
 
   while (1)
     {
-      add_node (list);
+      if (add_node (list) == -1) return 1;
       if (update_arg((void *)&((*list)->arg), &((*list)->orig), 0,
           prev_given, multi_token, possible_values, default_value,
           arg_type, 0, 1, 1, 1, long_opt, short_opt, additional_error)) {
