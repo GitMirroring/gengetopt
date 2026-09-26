@@ -7,6 +7,7 @@
   #:use-module ((gnu packages compiler-tools) #:select (flex))
   #:use-module ((gnu packages man) #:select (help2man))
   #:use-module ((gnu packages popt) #:select (gengetopt))
+  #:use-module ((gnu packages version-control) #:select (git))
   #:use-module ((guix build-system gnu) #:select (gnu-build-system))
   #:use-module ((guix download) #:select (url-fetch))
   #:use-module ((guix licenses) #:prefix license:)
@@ -51,6 +52,7 @@ are under development (e.g., Java).")
                             flex
                             gengen
                             gengetopt   ;we need ourself for build from git
+                            git
                             gnulib
                             help2man
                             libtool))

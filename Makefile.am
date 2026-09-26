@@ -43,3 +43,21 @@ release:
 	@echo 'Do not forget to update the website!'
 	@echo 'https://www.gnu.org/prep/maintain/maintain.html#Web-Pages'
 	@echo
+
+ChangeLog:
+	fmt='__-tag-line-__%>|(78)%(decorate:tag=)%n%as  %aN  <%aE>%n%n%w(0,8,8)%B'; \
+	git -C '$(abs_top_srcdir)' log						     \
+		--decorate-refs 'refs/tags/v*'					     \
+		--format="$$fmt"						     \
+		--no-merges --no-color HEAD >$@.x
+
+	$(AWK) '/^__-tag-line-__[\t ]*$$/ {next}{print}' <$@.x >$@.y
+	mv $@.y $@.x
+
+	$(SED) 's/^__-tag-line-__/              /'       <$@.x >$@.y
+	mv $@.y $@.x
+
+	$(SED) 's/^ \+$$//'                              <$@.x >$@.y
+	mv $@.y $@.x
+
+	mv $@.x $@
