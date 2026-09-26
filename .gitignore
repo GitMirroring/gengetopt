@@ -6,6 +6,8 @@
 *.out
 *.tar.gz
 *.tar.gz.asc
+*.tar.xz
+*.tar.xz.asc
 *.trs
 *.x
 *~
