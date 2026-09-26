@@ -4,6 +4,10 @@ Copyright (C) 1999-2011  Free Software Foundation
 
 Please send gengetopt bug reports to bug-gengetopt at gnu.org
 
+Version 2.23.1
+
+   * versiontext is no longer separated by empty line (bug #60195)
+
 Version 2.23
 
    * Gengen and gengetopt are required when building from git. When building
@@ -43,7 +47,7 @@ Version 2.22.3
    * enum option values can contain + and - (thanks to Papp Gyozo).
    * fixed compilation problems due to macro FIX_UNUSED which was not
    in the right place (thanks to Matthew Junker)
-   * --header-output-dir and --src_output-dir to store cmdline.h 
+   * --header-output-dir and --src_output-dir to store cmdline.h
    separately from cmdline.c (thanks to Yegor Yefremov)
    * #include <getopt.h> in the generated files, instead of "getopt.h"
    * generated functions use prototypes with char ** instead of
@@ -86,7 +90,7 @@ Version 2.22
      string and can have type enum (that will generate a C enum)
      (as suggested by Gyozo Papp)
    * usage string is printed only if not empty (as suggested by Gyozo Papp)
-   * in case of hidden options, the generated help string array reuses the 
+   * in case of hidden options, the generated help string array reuses the
      strings of the full help array (as suggested by Gyozo Papp)
    * the _help field for options is correctly generated even in the presence
      of additional text before and after an option and also groups

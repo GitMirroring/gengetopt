@@ -176,7 +176,7 @@ void
      @version_var_name@);
 
   if (strlen(@args_info@_versiontext) > 0)
-    printf("\n%s\n", @args_info@_versiontext);
+    printf("%s\n", @args_info@_versiontext);
 }
 
 static void print_help_common(void)
@@ -248,7 +248,7 @@ void
 @parser_name@_params_init(struct @parser_name@_params *params)
 {
   if (params)
-    { 
+    {
       params->override = 0;
       params->initialize = 1;
       params->check_required = 1;
@@ -260,9 +260,9 @@ void
 struct @parser_name@_params *
 @parser_name@_params_create(void)
 {
-  struct @parser_name@_params *params = 
+  struct @parser_name@_params *params =
     (struct @parser_name@_params *)malloc(sizeof(struct @parser_name@_params));
-  @parser_name@_params_init(params);  
+  @parser_name@_params_init(params);
   return params;
 }
 
@@ -315,7 +315,7 @@ struct generic_list
 };
 
 /**
- * @@brief add a node at the head of the list 
+ * @@brief add a node at the head of the list
  */
 static void add_node(struct generic_list **list) {
   struct generic_list *new_node = (struct generic_list *) malloc (sizeof (struct generic_list));
@@ -375,7 +375,7 @@ static void
   unsigned int i;@ENDIF@
 
   @free:method@
-  
+
 @IF@ handle_unnamed @THEN@
   for (i = 0; i < args_info->inputs_num; ++i)
     free (args_info->inputs [i]);
@@ -436,7 +436,7 @@ write_into_file(FILE *outfile, const char *opt, const char *arg, const char *val
   if (arg) {
     @IF@ check_possible_values @THEN@
     if (values) {
-      found = check_possible_values(arg, values);      
+      found = check_possible_values(arg, values);
     }
     if (found >= 0)
       return fprintf(outfile, "%s=\"%s\" # %s\n", opt, arg, values[found]);
@@ -455,7 +455,7 @@ static int
 write_multiple_into_file(FILE *outfile, int len, const char *opt, char **arg, const char *values[])
 {
   int i;
-  
+
   for (i = 0; i < len; ++i)
     if(write_into_file(outfile, opt, (arg ? arg[i] : 0), values) < 0)
       return -1;
@@ -559,8 +559,8 @@ get_multiple_arg_token(const char *arg)
   j = 0;
   while (arg[i] && (j < len-1))
     {
-      if (arg[i] == '\\' && 
-	  arg[ i + 1 ] && 
+      if (arg[i] == '\\' &&
+	  arg[ i + 1 ] &&
 	  arg[ i + 1 ] == ',')
         ++i;
 
@@ -654,7 +654,7 @@ check_multiple_option_occurrences(const char *prog_name, unsigned int option_giv
             }
         }
     }
-    
+
   return error_occurred;
 }
 @ENDIF@
@@ -680,7 +680,7 @@ int
 {
   int result;
   struct @parser_name@_params params;
-  
+
   params.override = override;
   params.initialize = initialize;
   params.check_required = check_required;
@@ -752,7 +752,7 @@ static char *package_name = 0;
  */
 static
 int update_arg(void *field, char **orig_field,
-               unsigned int *field_given, unsigned int *prev_given, 
+               unsigned int *field_given, unsigned int *prev_given,
                char *value, const char *possible_values[],
                const char *default_value,
                @parser_name@_arg_type arg_type,
@@ -775,11 +775,11 @@ int update_arg(void *field, char **orig_field,
   if (!multiple_option && prev_given && (*prev_given || (check_ambiguity && *field_given)))
     {
       if (short_opt != '-')
-        fprintf (stderr, "%s: `--%s' (`-%c') option given more than once%s\n", 
+        fprintf (stderr, "%s: `--%s' (`-%c') option given more than once%s\n",
                package_name, long_opt, short_opt,
                (additional_error ? additional_error : ""));
       else
-        fprintf (stderr, "%s: `--%s' option given more than once%s\n", 
+        fprintf (stderr, "%s: `--%s' option given more than once%s\n",
                package_name, long_opt,
                (additional_error ? additional_error : ""));
       return 1; /* failure */
@@ -789,11 +789,11 @@ int update_arg(void *field, char **orig_field,
   if (possible_values && (found = check_possible_values((value ? value : default_value), possible_values)) < 0)
     {
       if (short_opt != '-')
-        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s' (`-%c')%s\n", 
+        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s' (`-%c')%s\n",
           package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt, short_opt,
           (additional_error ? additional_error : ""));
       else
-        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s'%s\n", 
+        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s'%s\n",
           package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt,
           (additional_error ? additional_error : ""));
       return 1; /* failure */
@@ -801,7 +801,7 @@ int update_arg(void *field, char **orig_field,
 @ELSE@
   FIX_UNUSED (default_value);
 @ENDIF@
-    
+
   if (field_given && *field_given && ! override)
     return 0;
   if (prev_given)
@@ -871,8 +871,8 @@ int update_arg(void *field, char **orig_field,
     break;
   };
 
-@IF@ has_arg_int or has_arg_short or has_arg_long or 
-     has_arg_float or has_arg_double or 
+@IF@ has_arg_int or has_arg_short or has_arg_long or
+     has_arg_float or has_arg_double or
      has_arg_longdouble or has_arg_longlong @THEN@
   /* check numeric conversion */
   switch(arg_type) {
@@ -964,7 +964,7 @@ int update_multiple_arg_temp(struct generic_list **list,
     {
       add_node (list);
       if (update_arg((void *)&((*list)->arg), &((*list)->orig), 0,
-          prev_given, multi_token, possible_values, default_value, 
+          prev_given, multi_token, possible_values, default_value,
           arg_type, 0, 1, 1, 1, long_opt, short_opt, additional_error)) {
         if (multi_token) free(multi_token);
         return 1; /* failure */
@@ -1059,11 +1059,11 @@ void update_multiple_arg(void *field, char ***orig_field,
     default:
       break;
     };
-    
+
     for (i = (prev_given - 1); i >= 0; --i)
       {
         tmp = list;
-        
+
         switch(arg_type) {
 @IF@ has_arg_int @THEN@
         case ARG_INT:
@@ -1103,7 +1103,7 @@ void update_multiple_arg(void *field, char ***orig_field,
 @ENDIF@
         default:
           break;
-        }        
+        }
         (*orig_field) [i + field_given] = list->orig;
         list = list->next;
         free (tmp);
@@ -1120,7 +1120,7 @@ void update_multiple_arg(void *field, char ***orig_field,
 @ENDIF@
         if (! *((int **)field)) {
           *((int **)field) = (int *)malloc (sizeof (int));
-          (*((int **)field))[0] = default_value->int_arg; 
+          (*((int **)field))[0] = default_value->int_arg;
         }
         break;
 @ENDIF@
@@ -1197,7 +1197,7 @@ static int check_modes(
                        int given2[], const char *options2[])
 {
   int i = 0, j = 0, errors = 0;
-  
+
   while (given1[i] >= 0) {
     if (given1[i]) {
       while (given2[j] >= 0) {
@@ -1211,7 +1211,7 @@ static int check_modes(
     }
     ++i;
   }
-  
+
   return errors;
 }
 @ENDIF@
@@ -1228,7 +1228,7 @@ int
   @list_def:method{iteration=true}@
   int error_occurred = 0;
   struct @args_info@ local_args_info;
-  
+
   int override;
   int initialize;
   int check_required;
@@ -1240,9 +1240,9 @@ int
   int opterr;
   int optopt;
 @ENDIF@
-  
+
   package_name = argv[0];
-  
+
   /* TODO: Why is this here? It is not used anywhere. */
   override = params->override;
   FIX_UNUSED(override);
@@ -1529,7 +1529,7 @@ int
   params.check_required = check_required;
   params.check_ambiguity = 0;
   params.print_errors = 1;
-  
+
   return @parser_name@_config_file (filename, args_info, &params);
 }
 
@@ -1668,19 +1668,19 @@ int
   char **argv_ptr = 0;
   int result;
   unsigned int argc;
-  
+
   argc = @parser_name@_create_argv(cmdline, &argv_ptr, prog_name);
-  
+
   result =
     @parser_name@_internal (argc, argv_ptr, args_info, params, 0);
-  
+
   if (argv_ptr)
     {
       free (argv_ptr);
     }
 
   free_cmd_list();
-  
+
   @final_exit@
 }
 
