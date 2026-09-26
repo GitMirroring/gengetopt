@@ -24,6 +24,9 @@ if ENABLE_DOC
 SUBDIRS += doc
 endif
 
+# This does not work if placed into doc/Makefile.am.  Hm.
+AM_DISTCHECK_DVI_TARGET = html
+
 gengetoptdoc_DATA = ChangeLog COPYING NEWS THANKS INSTALL README LICENSE
 
 TARBALL = $(top_builddir)/gengetopt-$(PACKAGE_VERSION).tar.xz
