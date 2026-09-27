@@ -29,7 +29,7 @@ comments.
 Gengetopt is @strong{free software}. Please see the file @uref{LICENSE} and
 @uref{COPYING} for details. Use of gengetopt @strong{does not impose any
 particular license on the generated code, the generated code is considered to
-be in public domain}.
+be in public domain}, unless you use @option{--include-getopt}.
 
 Gengetopt has originally been written by @strong{Roberto Arturo Tena Sanchez}
 and currently maintained by @strong{Tomas Volf}.
