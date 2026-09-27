@@ -7,7 +7,7 @@ Please send gengetopt bug reports to bug-gengetopt at gnu.org
 Version 2.23.1
 
    * Clarify licensing of the generated code when --include-getopt is used.
-   * Fix compilation of generated code with --std=c++17.
+   * Fix compilation with --std=c++17.
    * versiontext is no longer separated by empty line (bug #60195).
    * Fix multiple bugs.
 
