@@ -12,6 +12,10 @@
 *.x
 *~
 
+*.tar.*.sig
+*.tar.*.directive
+*.tar.*.directive.asc
+
 /src/skels/*.cc
 /src/skels/*.h
 /tests/*.sh

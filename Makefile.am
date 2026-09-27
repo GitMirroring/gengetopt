@@ -29,16 +29,13 @@ AM_DISTCHECK_DVI_TARGET = html
 
 gengetoptdoc_DATA = ChangeLog COPYING NEWS THANKS INSTALL README LICENSE
 
-TARBALL = $(top_builddir)/gengetopt-$(PACKAGE_VERSION).tar.xz
-
 release:
-	$(MAKE) $(AM_MAKEFLAGS)
-	$(MAKE) $(AM_MAKEFLAGS) check
-	$(MAKE) $(AM_MAKEFLAGS) dist
-	cp $(top_srcdir)/gengetopt.directive $(TARBALL).directive
-	sed -i -e 's/VERSION/$(PACKAGE_VERSION)/g' $(TARBALL).directive
+	[ "$(TARBALL)" ] || { echo No TARBALL set.; exit 1; }
+	echo 'version: 1.2'          >$(TARBALL).directive
+	echo 'directory: gengetopt' >>$(TARBALL).directive
+	echo 'filename: $(TARBALL)' >>$(TARBALL).directive
 	gpg --yes --detach-sign $(TARBALL)
-	gpg --yes --clear-sign $(TARBALL).directive
+	gpg --yes --clear-sign  $(TARBALL).directive
 	curl -T $(TARBALL)               ftp://ftp-upload.gnu.org/incoming/ftp/
 	curl -T $(TARBALL).sig           ftp://ftp-upload.gnu.org/incoming/ftp/
 	curl -T $(TARBALL).directive.asc ftp://ftp-upload.gnu.org/incoming/ftp/
