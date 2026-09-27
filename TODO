@@ -11,7 +11,7 @@ When in status =Confirmed=, I think it is reasonable ask and will look into it.
 Work in =Postponed= is out of scope for me, but people are free to work on that,
 just that I will not.
 
-* Additional tasks [0/6]
+* Additional tasks [0/7]
 
 ** TODO Sort [[file:TODO.old]]
 
@@ -46,3 +46,22 @@ Currently generation from =.ggo= in tests does not actually depend on the built
 =gengetopt= command.  And since they are in different Makefiles, I am not sure
 how to do that.  So I should have just one top-level, with only thing using
 =SUBDIRS= being gnulib.
+
+** TODO Document updating the web page
+
+- The CVS repository can be checked out using:
+
+  #+begin_src sh
+    cd /tmp
+    guix shell -E CVS_RSH=ssh cvs \
+         -- cvs -z3 -d:ext:gray_wolf@cvs.savannah.gnu.org:/web/gengetopt co gengetopt
+  #+end_src
+- Both [[file:doc/gengetopt.html][manual]] and [[file:doc/index.html][index]] are generated during build, so copy them over into the
+  CVS repository.
+- And finally commit the changes:
+
+  #+begin_src sh
+    guix shell -E CVS_RSH=ssh cvs \
+         -- cvs -z3 -d:ext:gray_wolf@cvs.savannah.gnu.org:/web/gengetopt commit gengetopt.html index.html
+  #+end_src
+- It takes some time (~5 minutes?) for the changes to appear live.
